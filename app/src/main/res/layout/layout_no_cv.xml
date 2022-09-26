@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tạo CV đầu tiên trên Top CV"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Bạn muốn có công việc phù hợp với bản thân?\n\nHãy tạo ngay CV trên Top CV, chúng\ntôi sẽ gợi ý cho bạn những công\nviệc phù hợp nhất."
+        android:textAlignment="center"
+        android:textColor="@color/dark_gray"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/txt_title" />
+
+    <Button
+        android:id="@+id/btn_create"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="24dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:stateListAnimator="@null"
+        android:text="Tạo CV đầu tiên"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:backgroundTint="@color/main_color"
+        app:cornerRadius="10dp"
+        app:layout_constraintTop_toBottomOf="@id/txt_description" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,60 +1,82 @@
 package com.ntduc.topcv.ui.home.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ntduc.topcv.R
+import com.ntduc.topcv.databinding.FragmentJobBinding
+import com.ntduc.topcv.ui.home.adapter.GroupJobAdapter
+import com.ntduc.topcv.ui.home.model.GroupJob
+import com.ntduc.topcv.ui.home.model.Job
+import com.ntduc.topcv.ui.login.activity.LoginActivity
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [JobFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class JobFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentJobBinding
+    private lateinit var adapter: GroupJobAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_job, container, false)
+    ): View {
+        binding = FragmentJobBinding.inflate(inflater)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment JobFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            JobFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        init()
+    }
+
+    private fun init() {
+        initView()
+        initData()
+        initEvent()
+    }
+
+    private fun initEvent() {
+        binding.layoutToolbarJob.imgAva.setOnClickListener {
+            startActivity(Intent(requireActivity(), LoginActivity::class.java))
+        }
+    }
+
+    private fun initData() {
+        val list = loadGroupJob()
+        adapter.updateListGroupJob(list)
+    }
+
+    private fun initView() {
+        adapter = GroupJobAdapter(requireContext())
+        binding.rcvJob.adapter = adapter
+        binding.rcvJob.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+    }
+
+    private fun loadGroupJob(): ArrayList<GroupJob> {
+        val groupJobs = arrayListOf<GroupJob>()
+        for (i in 0..5) {
+            val groupJob = GroupJob()
+            groupJob.title = "Việc làm tốt nhất"
+            groupJob.isMore = true
+
+            val jobs = arrayListOf<Job>()
+            for (j in 0..5) {
+                val job = Job()
+                job.name = "Nhân viên văn phòng"
+                job.description = "CÔNG TY TNHH SẢN XUẤT - THƯƠNG MẠI MINH..."
+                job.salary = "Trên 7.5 triệu"
+                job.location = "Quận 8, Hồ Chí Minh"
+                job.date = "Còn 22 ngày để ứng tuyển"
+                jobs.add(job)
             }
+
+            groupJob.jobs = jobs
+            groupJobs.add(groupJob)
+        }
+        return groupJobs
     }
 }

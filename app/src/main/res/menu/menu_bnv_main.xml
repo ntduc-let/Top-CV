@@ -5,10 +5,6 @@
         android:icon="@drawable/ic_job"
         android:title="@string/job" />
     <item
-        android:id="@+id/discoverFragment"
-        android:icon="@drawable/ic_discover"
-        android:title="@string/discover" />
-    <item
         android:id="@+id/CVFragment"
         android:icon="@drawable/ic_cv"
         android:title="@string/create_cv" />

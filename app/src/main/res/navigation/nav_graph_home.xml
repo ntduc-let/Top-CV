@@ -11,11 +11,6 @@
         android:label="fragment_job"
         tools:layout="@layout/fragment_job" />
     <fragment
-        android:id="@+id/discoverFragment"
-        android:name="com.ntduc.topcv.ui.home.fragment.DiscoverFragment"
-        android:label="fragment_discover"
-        tools:layout="@layout/fragment_discover" />
-    <fragment
         android:id="@+id/CVFragment"
         android:name="com.ntduc.topcv.ui.home.fragment.CVFragment"
         android:label="fragment_cv"

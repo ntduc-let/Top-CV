@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration =
             AppBarConfiguration.Builder(
                 R.id.jobFragment,
-                R.id.discoverFragment,
                 R.id.CVFragment,
                 R.id.profileFragment
             ).build()
