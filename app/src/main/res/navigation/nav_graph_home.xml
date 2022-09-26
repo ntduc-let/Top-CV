@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_home"
+    app:startDestination="@id/jobFragment">
+
+    <fragment
+        android:id="@+id/jobFragment"
+        android:name="com.ntduc.topcv.ui.home.fragment.JobFragment"
+        android:label="fragment_job"
+        tools:layout="@layout/fragment_job" />
+    <fragment
+        android:id="@+id/discoverFragment"
+        android:name="com.ntduc.topcv.ui.home.fragment.DiscoverFragment"
+        android:label="fragment_discover"
+        tools:layout="@layout/fragment_discover" />
+    <fragment
+        android:id="@+id/CVFragment"
+        android:name="com.ntduc.topcv.ui.home.fragment.CVFragment"
+        android:label="fragment_cv"
+        tools:layout="@layout/fragment_cv" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.ntduc.topcv.ui.home.fragment.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>

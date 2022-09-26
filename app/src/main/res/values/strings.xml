@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Top CV</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="press_again_to_exit">Nhấn một lần nữa để thoát!</string>
+    <string name="job">Việc làm</string>
+    <string name="discover">Khám phá</string>
+    <string name="create_cv">Tạo CV</string>
+    <string name="profile">Hồ sơ</string>
+    <string name="disable_search_job">Đang tắt tìm việc</string>
+    <string name="setting_display">Cài đặt hiển thị</string>
+    <string name="title_search_job">Tìm kiếm công việc phù hợp với bạn</string>
+    <string name="hint_search_job">Từ khóa bạn đang tìm kiếm</string>
+    <string name="more">Xem tất cả</string>
+</resources>

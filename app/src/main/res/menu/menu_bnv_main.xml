@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/jobFragment"
+        android:icon="@drawable/ic_job"
+        android:title="@string/job" />
+    <item
+        android:id="@+id/discoverFragment"
+        android:icon="@drawable/ic_discover"
+        android:title="@string/discover" />
+    <item
+        android:id="@+id/CVFragment"
+        android:icon="@drawable/ic_cv"
+        android:title="@string/create_cv" />
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile" />
+</menu>
