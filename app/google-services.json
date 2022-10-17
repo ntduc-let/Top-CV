@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "671043116703",
+    "project_id": "topcv-androidnc",
+    "storage_bucket": "topcv-androidnc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:671043116703:android:abbfb9a9623a6dca3e0caa",
+        "android_client_info": {
+          "package_name": "com.ntduc.topcv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "671043116703-bmonmn61io7nroecu788jhdfk5upnj29.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpQJVvR4sJXg_xQBfba1PwhRZz1XT_ZIw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "671043116703-bmonmn61io7nroecu788jhdfk5upnj29.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
