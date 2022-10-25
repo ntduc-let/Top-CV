@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.fragment.JobFragment">
+    tools:context=".ui.ui.home.fragment.JobFragment">
 
     <include
         android:id="@+id/layout_toolbar_job"
         layout="@layout/layout_toolbar_job"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

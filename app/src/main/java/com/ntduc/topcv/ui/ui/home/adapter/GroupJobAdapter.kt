@@ -1,4 +1,4 @@
-package com.ntduc.topcv.ui.home.adapter
+package com.ntduc.topcv.ui.ui.home.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ntduc.topcv.databinding.ItemGroupJobBinding
-import com.ntduc.topcv.ui.home.model.GroupJob
+import com.ntduc.topcv.ui.ui.home.model.GroupJob
 
 class GroupJobAdapter(
     val context: Context,

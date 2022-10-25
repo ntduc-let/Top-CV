@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/jobFragment"
-        android:name="com.ntduc.topcv.ui.home.fragment.JobFragment"
+        android:name="com.ntduc.topcv.ui.ui.home.fragment.JobFragment"
         android:label="fragment_job"
         tools:layout="@layout/fragment_job" />
     <fragment
         android:id="@+id/CVFragment"
-        android:name="com.ntduc.topcv.ui.home.fragment.CVFragment"
+        android:name="com.ntduc.topcv.ui.ui.home.fragment.CVFragment"
         android:label="fragment_cv"
         tools:layout="@layout/fragment_cv" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.ntduc.topcv.ui.home.fragment.ProfileFragment"
+        android:name="com.ntduc.topcv.ui.ui.home.fragment.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>

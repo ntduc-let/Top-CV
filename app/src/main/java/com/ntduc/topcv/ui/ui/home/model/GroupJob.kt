@@ -1,4 +1,4 @@
-package com.ntduc.topcv.ui.home.model
+package com.ntduc.topcv.ui.ui.home.model
 
 open class GroupJob(
     var title: String? = null,

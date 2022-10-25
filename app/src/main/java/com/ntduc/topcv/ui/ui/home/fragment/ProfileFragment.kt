@@ -1,4 +1,4 @@
-package com.ntduc.topcv.ui.home.fragment
+package com.ntduc.topcv.ui.ui.home.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

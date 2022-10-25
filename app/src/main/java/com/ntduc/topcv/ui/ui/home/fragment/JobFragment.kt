@@ -1,4 +1,4 @@
-package com.ntduc.topcv.ui.home.fragment
+package com.ntduc.topcv.ui.ui.home.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,17 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ntduc.topcv.R
 import com.ntduc.topcv.databinding.FragmentJobBinding
-import com.ntduc.topcv.ui.home.adapter.GroupJobAdapter
-import com.ntduc.topcv.ui.home.model.GroupJob
-import com.ntduc.topcv.ui.home.model.Job
-import com.ntduc.topcv.ui.login.activity.LoginActivity
+import com.ntduc.topcv.ui.ui.home.activity.MainActivityVM
+import com.ntduc.topcv.ui.ui.home.adapter.GroupJobAdapter
+import com.ntduc.topcv.ui.ui.home.model.GroupJob
+import com.ntduc.topcv.ui.ui.home.model.Job
+import com.ntduc.topcv.ui.ui.login.activity.LoginActivity
 
 class JobFragment : Fragment() {
-    private lateinit var binding: FragmentJobBinding
-    private lateinit var adapter: GroupJobAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +44,14 @@ class JobFragment : Fragment() {
     }
 
     private fun initData() {
+        viewModel = ViewModelProvider(requireActivity())[MainActivityVM::class.java]
+        viewModel.userDB.observe(viewLifecycleOwner){
+            if (it != null){
+                binding.layoutToolbarJob.txtAccount.text = "Chào mừng bạn quay trở lại, ${it.name}"
+            }
+        }
+
+
         val list = loadGroupJob()
         adapter.updateListGroupJob(list)
     }
@@ -79,4 +86,8 @@ class JobFragment : Fragment() {
         }
         return groupJobs
     }
+
+    private lateinit var binding: FragmentJobBinding
+    private lateinit var adapter: GroupJobAdapter
+    private lateinit var viewModel: MainActivityVM
 }

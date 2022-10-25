@@ -8,7 +8,7 @@
     android:paddingHorizontal="16dp"
     android:paddingTop="48dp"
     android:paddingBottom="16dp"
-    tools:context=".ui.register.activity.RegisterActivity">
+    tools:context=".ui.ui.register.activity.RegisterActivity">
 
     <ImageView
         android:id="@+id/btn_close"
@@ -57,6 +57,16 @@
         android:textColorHint="#99FFFFFF"
         app:layout_constraintTop_toBottomOf="@id/btn_sign_out" />
 
+    <TextView
+        android:id="@+id/notification_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:text="Email không được để trống"
+        android:textColor="@color/red"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/edt_email" />
+
     <EditText
         android:id="@+id/edt_name"
         android:layout_width="match_parent"
@@ -70,7 +80,17 @@
         android:paddingHorizontal="16dp"
         android:textColor="@color/white"
         android:textColorHint="#99FFFFFF"
-        app:layout_constraintTop_toBottomOf="@id/edt_email" />
+        app:layout_constraintTop_toBottomOf="@id/notification_email" />
+
+    <TextView
+        android:id="@+id/notification_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:text="Tên không được để trống"
+        android:textColor="@color/red"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/edt_name" />
 
     <EditText
         android:id="@+id/edt_password"
@@ -85,7 +105,17 @@
         android:paddingHorizontal="16dp"
         android:textColor="@color/white"
         android:textColorHint="#99FFFFFF"
-        app:layout_constraintTop_toBottomOf="@id/edt_name" />
+        app:layout_constraintTop_toBottomOf="@id/notification_name" />
+
+    <TextView
+        android:id="@+id/notification_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:text="Mật khẩu không được để trống"
+        android:textColor="@color/red"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/edt_password" />
 
     <EditText
         android:id="@+id/edt_password_2"
@@ -100,7 +130,17 @@
         android:paddingHorizontal="16dp"
         android:textColor="@color/white"
         android:textColorHint="#99FFFFFF"
-        app:layout_constraintTop_toBottomOf="@id/edt_password" />
+        app:layout_constraintTop_toBottomOf="@id/notification_password" />
+
+    <TextView
+        android:id="@+id/notification_password_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:text="Vui lòng xác nhận lại mật khẩu"
+        android:textColor="@color/red"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/edt_password_2" />
 
     <CheckBox
         android:id="@+id/chk_policy"
@@ -111,7 +151,7 @@
         android:text="Tôi đồng ý với các Điều khoản dịch vụ và Chính sách bảo mật của Top CV"
         android:textColor="@color/white"
         app:buttonTint="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/edt_password_2" />
+        app:layout_constraintTop_toBottomOf="@id/notification_password_2" />
 
     <Button
         android:id="@+id/btn_register"

@@ -1,7 +1,9 @@
-package com.ntduc.topcv.ui.home.activity
+package com.ntduc.topcv.ui.ui.home.activity
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -11,13 +13,10 @@ import com.ntduc.contextutils.inflater
 import com.ntduc.toastutils.shortToast
 import com.ntduc.topcv.R
 import com.ntduc.topcv.databinding.ActivityMainBinding
+import com.ntduc.topcv.ui.data.model.UserDB
+import com.ntduc.topcv.ui.ui.login.activity.LoginActivity
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
-
-    private lateinit var navHostFragment: NavHostFragment
-    private lateinit var navController: NavController
-    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +28,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun init() {
         initView()
+        initData()
+    }
+
+    private fun initData() {
+        val userDB = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(LoginActivity.KEY_USER_DB, UserDB::class.java)
+        } else {
+            intent.getParcelableExtra(LoginActivity.KEY_USER_DB) as UserDB?
+        }
+
+        if (userDB != null){
+            viewModel.userDB.value = userDB
+        }
     }
 
     private fun initView() {
@@ -42,6 +54,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.profileFragment
             ).build()
         setupWithNavController(binding.bnvMain, navController)
+
+        viewModel = ViewModelProvider(this)[MainActivityVM::class.java]
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -66,4 +80,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: MainActivityVM
+    private lateinit var navHostFragment: NavHostFragment
+    private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
 }
