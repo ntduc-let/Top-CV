@@ -122,7 +122,7 @@ class RegisterActivity : AppCompatActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         intent.putExtra(KEY_EMAIL, binding.edtEmail.text.toString())
         intent.putExtra(KEY_PASSWORD, binding.edtPassword.text.toString())
-        startActivity(intent)
+        setResult(RESULT_OK, intent)
         finish()
     }
 

@@ -1,12 +1,14 @@
 package com.ntduc.topcv.ui.ui.login.activity
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.WindowManager
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -22,6 +24,7 @@ import com.ntduc.topcv.ui.networking.CallApiListener
 import com.ntduc.topcv.ui.ui.dialog.LoadingDialog
 import com.ntduc.topcv.ui.ui.home.activity.MainActivity
 import com.ntduc.topcv.ui.ui.register.activity.RegisterActivity
+import com.ntduc.topcv.ui.utils.Prefs
 
 class LoginActivity : AppCompatActivity() {
 
@@ -35,7 +38,12 @@ class LoginActivity : AppCompatActivity() {
 
     private fun init() {
         initView()
+        initData()
         initEvent()
+    }
+
+    private fun initData() {
+        mPrefs = Prefs(this)
     }
 
     private fun initEvent() {
@@ -44,8 +52,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.btnSignOut.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
-            finish()
+            registerLauncher.launch(Intent(this, RegisterActivity::class.java))
         }
 
         binding.btnLogin.setOnClickListener {
@@ -61,13 +68,6 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[LoginActivityVM::class.java]
         db = Firebase.firestore
-
-        val emailRegister = intent.getStringExtra(RegisterActivity.KEY_EMAIL)
-        val passwordRegister = intent.getStringExtra(RegisterActivity.KEY_PASSWORD)
-        if (emailRegister != null && passwordRegister != null){
-            binding.edtEmail.setText(emailRegister)
-            binding.edtPassword.setText(passwordRegister)
-        }
     }
 
     private fun clickLoginAccount() {
@@ -90,13 +90,19 @@ class LoginActivity : AppCompatActivity() {
             callApiListener = object : CallApiListener {
                 override fun onSuccess(userInfo: UserInfo?) {
                     if (userInfo != null) {
+                        mPrefs!!.updateEmail(account.account!!)
+                        mPrefs!!.updatePassword(account.hash!!)
                         getDataAccount(userInfo)
                     } else {
+                        mPrefs!!.updateEmail(null)
+                        mPrefs!!.updatePassword(null)
                         loadingDialog?.dismiss()
                     }
                 }
 
                 override fun onError(e: Throwable) {
+                    mPrefs!!.updateEmail(null)
+                    mPrefs!!.updatePassword(null)
                     loadingDialog?.dismiss()
                     shortToast("Hệ thống không phản hồi hoặc không có kết nối Internet")
                 }
@@ -134,8 +140,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun startHome(account: UserDB) {
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra(KEY_USER_DB, account)
-        startActivity(intent)
+        intent.putExtra(MainActivity.KEY_USER_DB, account)
+        setResult(RESULT_OK, intent)
         finish()
     }
 
@@ -191,12 +197,22 @@ class LoginActivity : AppCompatActivity() {
         return true
     }
 
-    companion object {
-        const val KEY_USER_DB = "KEY_USER_DB"
-    }
-
     private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: LoginActivityVM
     private lateinit var db: FirebaseFirestore
+
+    private var mPrefs: Prefs? = null
     private var loadingDialog: LoadingDialog? = null
+
+    private val registerLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                val emailRegister = it.data?.getStringExtra(RegisterActivity.KEY_EMAIL)
+                val passwordRegister = it.data?.getStringExtra(RegisterActivity.KEY_PASSWORD)
+                if (emailRegister != null && passwordRegister != null) {
+                    binding.edtEmail.setText(emailRegister)
+                    binding.edtPassword.setText(passwordRegister)
+                }
+            }
+        }
 }

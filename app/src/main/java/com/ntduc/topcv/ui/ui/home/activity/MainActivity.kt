@@ -33,9 +33,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun initData() {
         val userDB = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(LoginActivity.KEY_USER_DB, UserDB::class.java)
+            intent.getParcelableExtra(KEY_USER_DB, UserDB::class.java)
         } else {
-            intent.getParcelableExtra(LoginActivity.KEY_USER_DB) as UserDB?
+            intent.getParcelableExtra(KEY_USER_DB) as UserDB?
         }
 
         if (userDB != null){
@@ -79,6 +79,10 @@ class MainActivity : AppCompatActivity() {
                 time = System.currentTimeMillis()
             }
         }
+    }
+
+    companion object {
+        const val KEY_USER_DB = "KEY_USER_DB"
     }
 
     private lateinit var binding: ActivityMainBinding
