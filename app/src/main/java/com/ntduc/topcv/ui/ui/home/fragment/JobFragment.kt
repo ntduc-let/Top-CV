@@ -14,12 +14,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ntduc.topcv.databinding.FragmentJobBinding
 import com.ntduc.topcv.ui.data.model.UserDB
+import com.ntduc.topcv.ui.ui.account.information.activity.AccountInformationActivity
 import com.ntduc.topcv.ui.ui.home.activity.MainActivity
 import com.ntduc.topcv.ui.ui.home.activity.MainActivityVM
 import com.ntduc.topcv.ui.ui.home.adapter.GroupJobAdapter
 import com.ntduc.topcv.ui.ui.home.model.GroupJob
 import com.ntduc.topcv.ui.ui.home.model.Job
 import com.ntduc.topcv.ui.ui.login.activity.LoginActivity
+import com.ntduc.topcv.ui.utils.Prefs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -49,11 +51,17 @@ class JobFragment : Fragment() {
 
     private fun initEvent() {
         binding.layoutToolbarJob.imgAva.setOnClickListener {
-            loginLauncher.launch(Intent(requireContext(), LoginActivity::class.java))
+            if (mPrefs!!.isLogin){
+                accountLauncher.launch(Intent(requireContext(), AccountInformationActivity::class.java))
+            }else{
+                loginLauncher.launch(Intent(requireContext(), LoginActivity::class.java))
+            }
         }
     }
 
     private fun initData() {
+        mPrefs = Prefs(requireContext())
+
         viewModel = ViewModelProvider(requireActivity())[MainActivityVM::class.java]
         viewModel.userDB.observe(viewLifecycleOwner) {
             if (it != null) {
@@ -103,6 +111,8 @@ class JobFragment : Fragment() {
     private lateinit var adapter: GroupJobAdapter
     private lateinit var viewModel: MainActivityVM
 
+    private var mPrefs: Prefs? = null
+
     private val loginLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == AppCompatActivity.RESULT_OK) {
@@ -114,6 +124,14 @@ class JobFragment : Fragment() {
                 if (userDB != null) {
                     viewModel.userDB.value = userDB
                 }
+                mPrefs!!.loadSavedPreferences()
+            }
+        }
+
+    private val accountLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == AppCompatActivity.RESULT_OK) {
+
             }
         }
 }

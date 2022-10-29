@@ -23,8 +23,7 @@ data class UserDB(
     var wish: String? = null,
     var profession: String? = null,
     var specialConditions: String? = null,
-    var salary: String? = null,
-    var region: String? = null,
+    var workPlace: String? = null,
     var province: String? = null,
     var currentJob: JobDB? = null
 ) : Parcelable

@@ -26,7 +26,7 @@
         android:id="@+id/txt_setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_setting"
+        android:drawableStart="@drawable/ic_setting_16dp"
         android:drawablePadding="4dp"
         android:text="@string/setting_display"
         android:textColor="@color/dark_gray"
@@ -68,7 +68,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_search"
+                    android:drawableStart="@drawable/ic_search_16dp"
                     android:drawablePadding="8dp"
                     android:padding="16dp"
                     android:text="@string/hint_search_job"

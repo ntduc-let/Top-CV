@@ -51,11 +51,6 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        )
-
         viewModel = ViewModelProvider(this)[RegisterActivityVM::class.java]
     }
 

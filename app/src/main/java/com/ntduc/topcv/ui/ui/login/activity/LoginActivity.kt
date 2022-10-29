@@ -61,11 +61,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        )
-
         viewModel = ViewModelProvider(this)[LoginActivityVM::class.java]
         db = Firebase.firestore
     }
@@ -90,19 +85,16 @@ class LoginActivity : AppCompatActivity() {
             callApiListener = object : CallApiListener {
                 override fun onSuccess(userInfo: UserInfo?) {
                     if (userInfo != null) {
-                        mPrefs!!.updateEmail(account.account!!)
-                        mPrefs!!.updatePassword(account.hash!!)
+                        mPrefs!!.saveLogin(true, account.account!!, account.hash!!)
                         getDataAccount(userInfo)
                     } else {
-                        mPrefs!!.updateEmail(null)
-                        mPrefs!!.updatePassword(null)
+                        mPrefs!!.saveLogin(false)
                         loadingDialog?.dismiss()
                     }
                 }
 
                 override fun onError(e: Throwable) {
-                    mPrefs!!.updateEmail(null)
-                    mPrefs!!.updatePassword(null)
+                    mPrefs!!.saveLogin(false)
                     loadingDialog?.dismiss()
                     shortToast("Hệ thống không phản hồi hoặc không có kết nối Internet")
                 }

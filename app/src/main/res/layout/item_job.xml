@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:src="@drawable/ic_dollar"
+            android:src="@drawable/ic_dollar_16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txt_description" />
 
@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:src="@drawable/ic_location"
+            android:src="@drawable/ic_location_16dp"
             app:layout_constraintBottom_toBottomOf="@id/ic_dollar"
             app:layout_constraintStart_toEndOf="@id/txt_salary"
             app:layout_constraintTop_toTopOf="@id/ic_dollar" />

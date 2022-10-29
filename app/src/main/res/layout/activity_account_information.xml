@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_color"
+    android:paddingTop="16dp"
+    tools:context=".ui.ui.account.information.activity.AccountInformationActivity">
+
+    <ImageView
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/ic_close_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_logout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_logout" />
+
+    <ImageView
+        android:id="@+id/btn_change_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_change_password_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_logout"
+        app:layout_constraintEnd_toStartOf="@+id/btn_logout"
+        app:layout_constraintTop_toTopOf="@+id/btn_logout" />
+
+    <Button
+        android:id="@+id/btn_logout"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="Đăng xuất"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/white" />
+
+    <include
+        android:id="@+id/layout_ava"
+        layout="@layout/layout_change_ava"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/btn_close"
+        app:layout_constraintTop_toBottomOf="@id/btn_logout" />
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/layout_ava"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/layout_ava"
+        app:layout_constraintTop_toTopOf="@id/layout_ava" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/layout_bottom"
+        app:layout_constraintTop_toBottomOf="@id/layout_ava">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp">
+
+            <TextView
+                android:id="@+id/title_personal_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
+                android:text="Thông tin cá nhân"
+                android:textAllCaps="true"
+                android:textColor="@color/main_color"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txt_birthYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Năm sinh"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/title_personal_information" />
+
+            <EditText
+                android:id="@+id/edt_birthYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_birthYear" />
+
+            <TextView
+                android:id="@+id/txt_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Giới tính"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_birthYear" />
+
+            <EditText
+                android:id="@+id/edt_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_gender" />
+
+            <TextView
+                android:id="@+id/txt_height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chiều cao"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_gender" />
+
+            <EditText
+                android:id="@+id/edt_height"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@id/txt1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_height" />
+
+            <TextView
+                android:id="@+id/txt1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="m"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/edt_height"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/edt_height" />
+
+            <TextView
+                android:id="@+id/txt_weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cân nặng"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_height" />
+
+            <EditText
+                android:id="@+id/edt_weight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@id/txt2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_weight" />
+
+            <TextView
+                android:id="@+id/txt2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="kg"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/edt_weight"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/edt_weight" />
+
+            <TextView
+                android:id="@+id/txt_nameOfHighSchool"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tên trường THPT"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_weight" />
+
+            <EditText
+                android:id="@+id/edt_nameOfHighSchool"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_nameOfHighSchool" />
+
+            <TextView
+                android:id="@+id/txt_numberHousehold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Số hộ khẩu"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_nameOfHighSchool" />
+
+            <EditText
+                android:id="@+id/edt_numberHousehold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_numberHousehold" />
+
+            <TextView
+                android:id="@+id/txt_cccd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Số CMND/CCCD"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_numberHousehold" />
+
+            <EditText
+                android:id="@+id/edt_cccd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_cccd" />
+
+            <TextView
+                android:id="@+id/txt_hobby"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sở thích"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_cccd" />
+
+            <EditText
+                android:id="@+id/edt_hobby"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLines="5"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_hobby" />
+
+            <TextView
+                android:id="@+id/txt_personality"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tính cách"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_hobby" />
+
+            <EditText
+                android:id="@+id/edt_personality"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLines="5"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_personality" />
+
+            <TextView
+                android:id="@+id/txt_hometown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quê quán"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_personality" />
+
+            <EditText
+                android:id="@+id/edt_hometown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLines="5"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_hometown" />
+
+            <TextView
+                android:id="@+id/txt_levelEducational"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trình độ văn hóa"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_hometown" />
+
+            <EditText
+                android:id="@+id/edt_levelEducational"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLines="5"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_levelEducational" />
+
+            <TextView
+                android:id="@+id/txt_specialConditions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Điều kiện đặc biệt"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_levelEducational" />
+
+            <EditText
+                android:id="@+id/edt_specialConditions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLines="5"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_specialConditions" />
+
+            <TextView
+                android:id="@+id/title_practical_experience"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
+                android:text="Kinh nghiệm thực tế"
+                android:textAllCaps="true"
+                android:textColor="@color/main_color"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_specialConditions" />
+
+            <TextView
+                android:id="@+id/txt_profession"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ngành nghề"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/title_practical_experience" />
+
+            <EditText
+                android:id="@+id/edt_profession"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLines="5"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_profession" />
+
+            <TextView
+                android:id="@+id/txt_experience"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kinh nghiệm"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_profession" />
+
+            <EditText
+                android:id="@+id/edt_experience"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLines="5"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_experience" />
+
+            <TextView
+                android:id="@+id/title_currentJob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
+                android:text="Công việc hiện tại"
+                android:textAllCaps="true"
+                android:textColor="@color/main_color"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_experience" />
+
+            <TextView
+                android:id="@+id/txt_current_company"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Công ty làm việc"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/title_currentJob" />
+
+            <EditText
+                android:id="@+id/edt_current_company"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLines="5"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_current_company" />
+
+            <TextView
+                android:id="@+id/txt_current_profession"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ngành nghề"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_current_company" />
+
+            <EditText
+                android:id="@+id/edt_current_profession"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLines="5"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_current_profession" />
+
+            <TextView
+                android:id="@+id/txt_current_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Địa chỉ"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_current_profession" />
+
+            <EditText
+                android:id="@+id/edt_current_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLines="5"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_current_address" />
+
+            <TextView
+                android:id="@+id/txt_current_certificatePhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ảnh chứng chỉ"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_current_address" />
+
+            <EditText
+                android:id="@+id/edt_current_certificatePhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLines="5"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_current_certificatePhoto" />
+
+            <TextView
+                android:id="@+id/title_yourWishes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
+                android:text="Mong muốn của bạn"
+                android:textAllCaps="true"
+                android:textColor="@color/main_color"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_current_certificatePhoto" />
+
+            <TextView
+                android:id="@+id/txt_salary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mức lương"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/title_yourWishes" />
+
+            <EditText
+                android:id="@+id/edt_salary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLines="5"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_salary" />
+
+            <TextView
+                android:id="@+id/txt_workPlace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Khu vực làm việc"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_salary" />
+
+            <EditText
+                android:id="@+id/edt_workPlace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLines="5"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_workPlace" />
+
+            <TextView
+                android:id="@+id/txt_wish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nguyện vọng"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/edt_workPlace" />
+
+            <EditText
+                android:id="@+id/edt_wish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLines="5"
+                android:text="5"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_wish" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <include
+        android:id="@+id/layout_bottom"
+        layout="@layout/layout_bottom_account_information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

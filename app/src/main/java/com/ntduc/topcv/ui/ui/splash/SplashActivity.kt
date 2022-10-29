@@ -48,15 +48,13 @@ class SplashActivity : AppCompatActivity() {
                         if (userInfo != null) {
                             getDataAccount(userInfo)
                         } else {
-                            mPrefs!!.updateEmail(null)
-                            mPrefs!!.updatePassword(null)
+                            mPrefs!!.saveLogin(false)
                             startHome(null)
                         }
                     }
 
                     override fun onError(e: Throwable) {
-                        mPrefs!!.updateEmail(null)
-                        mPrefs!!.updatePassword(null)
+                        mPrefs!!.saveLogin(false)
                         startHome(null)
                     }
                 })
