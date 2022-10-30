@@ -130,8 +130,9 @@ class JobFragment : Fragment() {
 
     private val accountLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == AppCompatActivity.RESULT_OK) {
-
+            if (it.resultCode == AccountInformationActivity.RESULT_LOGOUT) {
+                viewModel.userDB.value = null
+                mPrefs!!.loadSavedPreferences()
             }
         }
 }

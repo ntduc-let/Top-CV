@@ -1,6 +1,7 @@
 package com.ntduc.topcv.ui.data.repository
 
 import com.ntduc.topcv.ui.data.model.Account
+import com.ntduc.topcv.ui.data.model.NewAccount
 import com.ntduc.topcv.ui.networking.RetrofitService
 
 object TopCVRepository {
@@ -9,4 +10,5 @@ object TopCVRepository {
     private val topCVApi = RetrofitService.topCVApi
     suspend fun createAccount(account: Account) = topCVApi.createAccount(account = account)
     suspend fun loginAccount(account: Account) = topCVApi.loginAccount(account = account)
+    suspend fun changePassword(newAccount: NewAccount) = topCVApi.changePassword(newAccount = newAccount)
 }

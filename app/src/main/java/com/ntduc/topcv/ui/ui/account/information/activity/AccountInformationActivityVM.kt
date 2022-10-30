@@ -1,17 +1,20 @@
-package com.ntduc.topcv.ui.ui.splash
+package com.ntduc.topcv.ui.ui.account.information.activity
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ntduc.topcv.ui.data.model.Account
+import com.ntduc.topcv.ui.data.model.UserDB
 import com.ntduc.topcv.ui.data.model.UserInfo
 import com.ntduc.topcv.ui.data.repository.TopCVRepository
 import com.ntduc.topcv.ui.networking.CallApiListener
+import com.ntduc.topcv.ui.ui.splash.SplashActivityVM
 import kotlinx.coroutines.*
 
-class SplashActivityVM : ViewModel() {
+class AccountInformationActivityVM : ViewModel() {
     companion object {
-        private const val TAG: String = "xLoginActivityVM"
+        private const val TAG: String = "xAccountInformationActivityVM"
     }
 
     private var callApiListener: CallApiListener? = null
@@ -28,7 +31,7 @@ class SplashActivityVM : ViewModel() {
             try {
                 withTimeout(15000) {
                     val userInfo = login(account)
-                    this@SplashActivityVM.callApiListener?.onSuccess(userInfo)
+                    this@AccountInformationActivityVM.callApiListener?.onSuccess(userInfo)
                 }
             } catch (e: TimeoutCancellationException) {
                 Log.d(TAG, "Error : time out request")
