@@ -3,6 +3,7 @@ package com.ntduc.topcv.ui.ui.home.fragment
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -64,6 +65,7 @@ class JobFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[MainActivityVM::class.java]
         viewModel.userDB.observe(viewLifecycleOwner) {
+            Log.d("ntduc_debug", "initData: $it")
             if (it != null) {
                 binding.layoutToolbarJob.txtAccount.text = "Chào mừng bạn quay trở lại, ${it.name}"
             } else {
@@ -133,6 +135,12 @@ class JobFragment : Fragment() {
             if (it.resultCode == AccountInformationActivity.RESULT_LOGOUT) {
                 viewModel.userDB.value = null
                 mPrefs!!.loadSavedPreferences()
+            }else if (it.resultCode == AccountInformationActivity.RESULT_UPDATE){
+                viewModel.userDB.value = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    it.data?.getParcelableExtra(MainActivity.KEY_USER_DB, UserDB::class.java)
+                } else {
+                    it.data?.getParcelableExtra(MainActivity.KEY_USER_DB) as UserDB?
+                }
             }
         }
 }
