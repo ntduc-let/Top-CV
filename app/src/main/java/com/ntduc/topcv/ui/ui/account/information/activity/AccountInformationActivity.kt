@@ -24,6 +24,8 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import com.ntduc.androidimagecropper.CropImage
+import com.ntduc.androidimagecropper.CropImageView
 import com.ntduc.contextutils.inflater
 import com.ntduc.datetimeutils.currentCalendar
 import com.ntduc.datetimeutils.year
@@ -45,8 +47,6 @@ import com.ntduc.topcv.ui.utils.PermissionUtil
 import com.ntduc.topcv.ui.utils.Prefs
 import com.ntduc.topcv.ui.ui.account.information.dialog.RequestPermissionCameraDialog
 import com.ntduc.topcv.ui.ui.account.information.dialog.RequestPermissionReadAllFileDialog
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
 import java.io.File
 
 class AccountInformationActivity : AppCompatActivity() {
@@ -279,7 +279,7 @@ class AccountInformationActivity : AppCompatActivity() {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 val result = CropImage.getActivityResult(data)
-                binding.layoutAva.imgAva.setImageURI(result.uri)
+                binding.layoutAva.imgAva.setImageURI(result?.uri)
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 shortToast("Tải ảnh thất bại")
             }
