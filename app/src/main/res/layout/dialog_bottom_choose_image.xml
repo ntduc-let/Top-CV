@@ -13,7 +13,7 @@
         android:gravity="center"
         android:text="Cập nhật ảnh đại diện"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="24sp"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
@@ -32,7 +32,7 @@
         android:paddingVertical="8dp"
         android:text="Chụp ảnh"
         android:textColor="@color/main_color"
-        android:textSize="14sp"
+        android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/line1" />
 
     <View
@@ -50,7 +50,7 @@
         android:paddingVertical="8dp"
         android:text="Chọn từ thư viện"
         android:textColor="@color/main_color"
-        android:textSize="14sp"
+        android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/line2" />
 
     <View
@@ -68,7 +68,7 @@
         android:paddingVertical="8dp"
         android:text="Xóa ảnh đại diện"
         android:textColor="@color/red"
-        android:textSize="14sp"
+        android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/line3" />
 
     <View
@@ -86,7 +86,7 @@
         android:paddingVertical="8dp"
         android:text="Đóng"
         android:textColor="@color/main_color"
-        android:textSize="14sp"
+        android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/line4" />
 
     <View

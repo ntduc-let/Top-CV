@@ -18,6 +18,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -31,6 +33,7 @@ import com.ntduc.datetimeutils.currentCalendar
 import com.ntduc.datetimeutils.year
 import com.ntduc.toastutils.shortToast
 import com.ntduc.topcv.BuildConfig
+import com.ntduc.topcv.R
 import com.ntduc.topcv.databinding.ActivityAccountInformationBinding
 import com.ntduc.topcv.ui.data.model.Account
 import com.ntduc.topcv.ui.data.model.UserDB
@@ -100,9 +103,9 @@ class AccountInformationActivity : AppCompatActivity() {
 
         binding.layoutBottom.btnUpdate.setOnClickListener {
             if (account != null) {
-                if (binding.edtName.text.trim().length !in 2..50){
+                if (binding.edtName.text.trim().length !in 2..50) {
                     shortToast("Tên phải từ 2 đến 50 ký tự")
-                }else{
+                } else {
                     updateAccount()
                 }
             } else {
@@ -189,10 +192,13 @@ class AccountInformationActivity : AppCompatActivity() {
         val updateAccount = UserDB(
             userInfo = account!!.userInfo,
             name = binding.edtName.text.toString(),
-            birthYear = if (binding.textBirthYear.text.isEmpty()) null else binding.textBirthYear.text.toString().toInt(),
+            birthYear = if (binding.textBirthYear.text.isEmpty()) null else binding.textBirthYear.text.toString()
+                .toInt(),
             gender = if (binding.textGender.text.isEmpty()) null else binding.textGender.text.toString(),
-            height = if (binding.textHeight.text.isEmpty()) null else binding.textHeight.text.toString().toInt(),
-            weight = if (binding.textWeight.text.isEmpty()) null else binding.textWeight.text.toString().toInt(),
+            height = if (binding.textHeight.text.isEmpty()) null else binding.textHeight.text.toString()
+                .toInt(),
+            weight = if (binding.textWeight.text.isEmpty()) null else binding.textWeight.text.toString()
+                .toInt(),
             experience = if (binding.textExperience.text.isEmpty()) null else binding.textExperience.text.toString(),
             nameOfHighSchool = if (binding.textNameOfHighSchool.text.isEmpty()) null else binding.textNameOfHighSchool.text.toString(),
             numberHousehold = if (binding.textNumberHousehold.text.isEmpty()) null else binding.textNumberHousehold.text.toString(),
@@ -200,7 +206,8 @@ class AccountInformationActivity : AppCompatActivity() {
             hobby = if (binding.textHobby.text.isEmpty()) null else binding.textHobby.text.toString(),
             personality = if (binding.textPersonality.text.isEmpty()) null else binding.textPersonality.text.toString(),
             hometown = if (binding.textHometown.text.isEmpty()) null else binding.textHometown.text.toString(),
-            levelEducational = if (binding.textLevelEducational.text.isEmpty()) null else binding.textLevelEducational.text.toString().toInt(),
+            levelEducational = if (binding.textLevelEducational.text.isEmpty()) null else binding.textLevelEducational.text.toString()
+                .toInt(),
             wish = null,
             profession = null,
             specialConditions = null,
@@ -212,13 +219,48 @@ class AccountInformationActivity : AppCompatActivity() {
             .set(updateAccount)
             .addOnSuccessListener {
                 Log.d("ntduc_debug", "DocumentSnapshot successfully written!")
-                loadingDialog?.dismiss()
-                shortToast("Cập nhật tài khoản thành công")
+                if (isChangeAvatar) {
+                    val storageRef = storage.reference
+                    val avatarRef =
+                        storageRef.child("${account!!.userInfo!!._id!!}/account/avatar/avatar.jpg")
+                    if (isDeleteAvatar) {
+                        val deleteTask = avatarRef.delete()
+                        deleteTask.addOnSuccessListener {
+                            loadingDialog?.dismiss()
+                            shortToast("Cập nhật tài khoản thành công")
 
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra(MainActivity.KEY_USER_DB, updateAccount)
-                setResult(RESULT_UPDATE, intent)
-                finish()
+                            val intent = Intent(this, MainActivity::class.java)
+                            intent.putExtra(MainActivity.KEY_USER_DB, updateAccount)
+                            setResult(RESULT_UPDATE, intent)
+                            finish()
+                        }.addOnFailureListener {
+                            loadingDialog?.dismiss()
+                            shortToast("Cập nhật ảnh đại diện thất bại")
+                        }
+                    } else {
+                        val uploadTask = avatarRef.putFile(uriCamera!!)
+                        uploadTask.addOnSuccessListener {
+                            loadingDialog?.dismiss()
+                            shortToast("Cập nhật tài khoản thành công")
+
+                            val intent = Intent(this, MainActivity::class.java)
+                            intent.putExtra(MainActivity.KEY_USER_DB, updateAccount)
+                            setResult(RESULT_UPDATE, intent)
+                            finish()
+                        }.addOnFailureListener {
+                            loadingDialog?.dismiss()
+                            shortToast("Cập nhật ảnh đại diện thất bại")
+                        }
+                    }
+                } else {
+                    loadingDialog?.dismiss()
+                    shortToast("Cập nhật tài khoản thành công")
+
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra(MainActivity.KEY_USER_DB, updateAccount)
+                    setResult(RESULT_UPDATE, intent)
+                    finish()
+                }
             }
             .addOnFailureListener { e ->
                 Log.d("ntduc_debug", "Error writing document: $e")
@@ -232,6 +274,14 @@ class AccountInformationActivity : AppCompatActivity() {
         binding.layoutLoading.root.visibility = View.GONE
 
         binding.edtName.setText(account!!.name)
+
+        Glide.with(this)
+            .load("https://firebasestorage.googleapis.com/v0/b/topcv-androidnc.appspot.com/o/${account!!.userInfo!!._id}%2Faccount%2Favatar%2Favatar.jpg?alt=media")
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .placeholder(R.color.black)
+            .error(R.drawable.ic_ava_48dp)
+            .into(binding.layoutAva.imgAva)
 
         if (account!!.birthYear != null) binding.textBirthYear.setText(account!!.birthYear!!.toString())
         if (account!!.gender != null) binding.textGender.setText(account!!.gender!!.toString())
@@ -252,23 +302,25 @@ class AccountInformationActivity : AppCompatActivity() {
         dialog.setOnTakePhotoListener {
             if (PermissionUtil.checkPermissionCamera(this)) {
                 openCamera()
-                dialog.dismiss()
             } else {
                 requestCameraPermission()
             }
+            dialog.dismiss()
         }
 
         dialog.setOnChooseFromAlbumsListener {
             if (PermissionUtil.checkPermissionReadAllFile(this)) {
                 chooseFile()
-                dialog.dismiss()
             } else {
                 requestPermissionReadAllFile()
             }
+            dialog.dismiss()
         }
 
         dialog.setOnDeleteListener {
-
+            isChangeAvatar = true
+            isDeleteAvatar = true
+            binding.layoutAva.imgAva.setImageResource(R.drawable.ic_ava_48dp)
         }
 
         dialog.show(supportFragmentManager, "TakePhotoBottomDialog")
@@ -279,7 +331,15 @@ class AccountInformationActivity : AppCompatActivity() {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 val result = CropImage.getActivityResult(data)
-                binding.layoutAva.imgAva.setImageURI(result?.uri)
+                Glide.with(this)
+                    .load(result?.uri)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .placeholder(R.color.black)
+                    .error(R.drawable.ic_ava_48dp)
+                    .into(binding.layoutAva.imgAva)
+                isChangeAvatar = true
+                isDeleteAvatar = false
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 shortToast("Tải ảnh thất bại")
             }
@@ -391,6 +451,8 @@ class AccountInformationActivity : AppCompatActivity() {
                         } else {
                             openDialogPermissionCamera()
                         }
+                    } else {
+                        openCamera()
                     }
                 }
             }
@@ -466,6 +528,8 @@ class AccountInformationActivity : AppCompatActivity() {
     private var account: UserDB? = null
     private var loadingDialog: LoadingDialog? = null
     private var uriCamera: Uri? = null
+    private var isChangeAvatar: Boolean = false
+    private var isDeleteAvatar: Boolean = false
 
     private val changePWLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
