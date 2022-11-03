@@ -3,7 +3,6 @@ package com.ntduc.topcv.ui.ui.home.fragment
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +10,10 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.ntduc.topcv.R
 import com.ntduc.topcv.databinding.FragmentJobBinding
 import com.ntduc.topcv.ui.data.model.UserDB
 import com.ntduc.topcv.ui.ui.account.information.activity.AccountInformationActivity
@@ -23,10 +24,6 @@ import com.ntduc.topcv.ui.ui.home.model.GroupJob
 import com.ntduc.topcv.ui.ui.home.model.Job
 import com.ntduc.topcv.ui.ui.login.activity.LoginActivity
 import com.ntduc.topcv.ui.utils.Prefs
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.File
 
 class JobFragment : Fragment() {
 
@@ -65,11 +62,19 @@ class JobFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[MainActivityVM::class.java]
         viewModel.userDB.observe(viewLifecycleOwner) {
-            Log.d("ntduc_debug", "initData: $it")
+            binding.layoutLoading.root.visibility = View.GONE
             if (it != null) {
                 binding.layoutToolbarJob.txtAccount.text = "Chào mừng bạn quay trở lại, ${it.name}"
+                Glide.with(this)
+                    .load("https://firebasestorage.googleapis.com/v0/b/topcv-androidnc.appspot.com/o/${it.userInfo!!._id}%2Faccount%2Favatar%2Favatar.jpg?alt=media")
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .placeholder(R.color.black)
+                    .error(R.drawable.ic_ava_48dp)
+                    .into(binding.layoutToolbarJob.imgAva)
             } else {
                 binding.layoutToolbarJob.txtAccount.text = "Chào bạn"
+                binding.layoutToolbarJob.imgAva.setImageResource(R.drawable.ic_ava_48dp)
             }
         }
 
@@ -124,6 +129,7 @@ class JobFragment : Fragment() {
                     it.data?.getParcelableExtra(MainActivity.KEY_USER_DB) as UserDB?
                 }
                 if (userDB != null) {
+                    binding.layoutLoading.root.visibility = View.VISIBLE
                     viewModel.userDB.value = userDB
                 }
                 mPrefs!!.loadSavedPreferences()
@@ -133,9 +139,11 @@ class JobFragment : Fragment() {
     private val accountLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == AccountInformationActivity.RESULT_LOGOUT) {
+                binding.layoutLoading.root.visibility = View.VISIBLE
                 viewModel.userDB.value = null
                 mPrefs!!.loadSavedPreferences()
             }else if (it.resultCode == AccountInformationActivity.RESULT_UPDATE){
+                binding.layoutLoading.root.visibility = View.VISIBLE
                 viewModel.userDB.value = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     it.data?.getParcelableExtra(MainActivity.KEY_USER_DB, UserDB::class.java)
                 } else {

@@ -4,43 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp"
-    tools:context=".ui.ui.home.fragment.CVFragment">
+    tools:context=".ui.ui.create_cv.activity.CreateCVActivity">
 
     <TextView
         android:id="@+id/txt_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Quản lý CV"
+        android:text="Sửa CV"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/layout_no_cv"
-        layout="@layout/layout_no_cv"
+    <EditText
+        android:id="@+id/edt_title_cv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:drawablePadding="8dp"
+        android:ellipsize="end"
+        android:hint="Tiêu đề CV"
+        android:inputType="text"
+        android:maxLines="1"
+        android:paddingHorizontal="16dp"
+        android:textAlignment="center"
+        android:textColor="@color/main_color"
+        android:textColorHint="#99FFFFFF"
         app:layout_constraintTop_toBottomOf="@id/txt_title" />
 
     <include
-        android:id="@+id/layout_list_cv"
-        layout="@layout/layout_list_cv"
+        android:id="@+id/layout_bottom"
+        layout="@layout/layout_bottom_create_cv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <include
+        layout="@layout/layout_cv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_title" />
-
-    <include
-        android:id="@+id/layout_loading"
-        layout="@layout/layout_loading"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@id/layout_bottom"
+        app:layout_constraintTop_toBottomOf="@id/edt_title_cv" />
 </androidx.constraintlayout.widget.ConstraintLayout>

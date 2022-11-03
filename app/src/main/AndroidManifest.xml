@@ -8,7 +8,6 @@
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
-
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -21,6 +20,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TopCV"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.ui.create_cv.activity.CreateCVActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.ui.account.change_password.activity.ChangePasswordActivity"
             android:exported="true"
@@ -57,7 +60,6 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.ntduc.androidimagecropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
