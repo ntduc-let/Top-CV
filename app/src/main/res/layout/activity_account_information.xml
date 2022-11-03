@@ -359,26 +359,12 @@
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/menu_specialConditions" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/menu_profession"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            <include
+                android:id="@+id/layout_profession"
+                layout="@layout/layout_add_profession"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ngành nghề"
-                app:boxBackgroundColor="@color/light_gray"
-                app:boxStrokeColor="@color/main_color"
-                app:endIconTint="@color/main_color"
-                app:hintTextColor="@color/main_color"
-                app:layout_constraintTop_toBottomOf="@id/title_practical_experience">
-
-                <AutoCompleteTextView
-                    android:id="@+id/text_profession"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    tools:ignore="LabelFor" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintTop_toBottomOf="@+id/title_practical_experience" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/menu_experience"
@@ -391,7 +377,7 @@
                 app:boxStrokeColor="@color/main_color"
                 app:endIconTint="@color/main_color"
                 app:hintTextColor="@color/main_color"
-                app:layout_constraintTop_toBottomOf="@id/menu_profession">
+                app:layout_constraintTop_toBottomOf="@id/layout_profession">
 
                 <AutoCompleteTextView
                     android:id="@+id/text_experience"

@@ -1,6 +1,7 @@
 package com.ntduc.topcv.ui.ui.account.information.activity
 
 import android.Manifest
+import android.content.ClipData.Item
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,6 +19,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.firestore.FirebaseFirestore
@@ -35,21 +38,20 @@ import com.ntduc.toastutils.shortToast
 import com.ntduc.topcv.BuildConfig
 import com.ntduc.topcv.R
 import com.ntduc.topcv.databinding.ActivityAccountInformationBinding
-import com.ntduc.topcv.ui.data.model.Account
-import com.ntduc.topcv.ui.data.model.UserDB
-import com.ntduc.topcv.ui.data.model.UserInfo
+import com.ntduc.topcv.ui.data.model.*
 import com.ntduc.topcv.ui.networking.CallApiListener
 import com.ntduc.topcv.ui.ui.account.change_password.activity.ChangePasswordActivity
+import com.ntduc.topcv.ui.ui.account.information.adapter.ItemProfessionAdapter
 import com.ntduc.topcv.ui.ui.account.information.adapter.MenuBirthYearAdapter
 import com.ntduc.topcv.ui.ui.account.information.adapter.MenuGenderAdapter
-import com.ntduc.topcv.ui.ui.account.information.dialog.ChooseImageBottomDialog
-import com.ntduc.topcv.ui.ui.account.information.dialog.LogoutDialog
+import com.ntduc.topcv.ui.ui.account.information.dialog.*
 import com.ntduc.topcv.ui.ui.dialog.LoadingDialog
 import com.ntduc.topcv.ui.ui.home.activity.MainActivity
 import com.ntduc.topcv.ui.utils.PermissionUtil
 import com.ntduc.topcv.ui.utils.Prefs
-import com.ntduc.topcv.ui.ui.account.information.dialog.RequestPermissionCameraDialog
-import com.ntduc.topcv.ui.ui.account.information.dialog.RequestPermissionReadAllFileDialog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class AccountInformationActivity : AppCompatActivity() {
@@ -95,6 +97,20 @@ class AccountInformationActivity : AppCompatActivity() {
 
         binding.layoutAva.root.setOnClickListener {
             openChooseImageDialog()
+        }
+
+        binding.layoutProfession.btnAdd.setOnClickListener {
+            val dialog = ChooseProfessionBottomDialog()
+            dialog.setListProfession(professions)
+            dialog.setOnClickItemListener {
+                if (it.isSelected){
+                    adapter.list.add(it)
+                }else{
+                    adapter.list.remove(it)
+                }
+                adapter.reloadData()
+            }
+            dialog.show(supportFragmentManager, "ChooseProfessionBottomDialog")
         }
 
         binding.layoutBottom.btnBack.setOnClickListener {
@@ -157,6 +173,11 @@ class AccountInformationActivity : AppCompatActivity() {
         dataGender = getDataGender()
         val menuGenderAdapter = MenuGenderAdapter(this, dataGender)
         binding.textGender.setAdapter(menuGenderAdapter)
+
+        adapter = ItemProfessionAdapter(this, ItemProfessionAdapter.MODE_REMOVE, arrayListOf())
+        binding.layoutProfession.rcvList.adapter = adapter
+        binding.layoutProfession.rcvList.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
     private fun getDataAccount(userInfo: UserInfo) {
@@ -189,6 +210,11 @@ class AccountInformationActivity : AppCompatActivity() {
         loadingDialog = LoadingDialog()
         loadingDialog!!.show(supportFragmentManager, "LoadingDialog")
 
+        val professions = arrayListOf<ProfessionDB>()
+        adapter.list.forEach {
+            professions.add(it.professionDB)
+        }
+
         val updateAccount = UserDB(
             userInfo = account!!.userInfo,
             name = binding.edtName.text.toString(),
@@ -209,7 +235,7 @@ class AccountInformationActivity : AppCompatActivity() {
             levelEducational = if (binding.textLevelEducational.text.isEmpty()) null else binding.textLevelEducational.text.toString()
                 .toInt(),
             wish = null,
-            profession = null,
+            professions = professions,
             specialConditions = null,
             workPlace = null,
             province = null,
@@ -271,7 +297,50 @@ class AccountInformationActivity : AppCompatActivity() {
     }
 
     private fun updateUI() {
-        binding.layoutLoading.root.visibility = View.GONE
+        val docRef = db.collection("top_cv_global").document("profession_global")
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    lifecycleScope.launch(Dispatchers.IO){
+                        val professionsDB = document.toObject<ProfessionsDB>()
+
+                        if (professionsDB != null) {
+                            professions = arrayListOf()
+                            professionsDB.professions?.forEach {
+                                val profession = Profession(it)
+                                if (account!!.professions != null && account!!.professions!!.isNotEmpty()) {
+                                    if (account!!.professions!!.contains(it)){
+                                        profession.isSelected = true
+                                    }
+                                }
+                                professions.add(profession)
+                            }
+
+                            val result = professions.filter {
+                                it.isSelected
+                            }
+                            withContext(Dispatchers.Main){
+                                binding.layoutLoading.root.visibility = View.GONE
+                                adapter.updateData(result)
+                            }
+
+                        } else {
+                            withContext(Dispatchers.Main){
+                                shortToast("Có lỗi xảy ra, vui lòng thử lại")
+                                onBackPressed()
+                            }
+                        }
+                    }
+                } else {
+                    shortToast("Có lỗi xảy ra, vui lòng thử lại")
+                    onBackPressed()
+                }
+            }
+            .addOnFailureListener { e ->
+                shortToast("Có lỗi xảy ra, vui lòng thử lại")
+                onBackPressed()
+            }
+
 
         binding.edtName.setText(account!!.name)
 
@@ -518,6 +587,7 @@ class AccountInformationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAccountInformationBinding
     private lateinit var viewModel: AccountInformationActivityVM
+    private lateinit var adapter: ItemProfessionAdapter
     private lateinit var db: FirebaseFirestore
     private lateinit var storage: FirebaseStorage
 
@@ -526,6 +596,7 @@ class AccountInformationActivity : AppCompatActivity() {
 
     private var mPrefs: Prefs? = null
     private var account: UserDB? = null
+    private var professions: ArrayList<Profession> = arrayListOf()
     private var loadingDialog: LoadingDialog? = null
     private var uriCamera: Uri? = null
     private var isChangeAvatar: Boolean = false

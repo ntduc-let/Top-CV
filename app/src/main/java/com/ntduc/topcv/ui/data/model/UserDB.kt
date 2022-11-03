@@ -20,7 +20,7 @@ data class UserDB(
     var hometown: String? = null,
     var levelEducational: Int? = null,
     var wish: String? = null,
-    var profession: String? = null,
+    var professions: ArrayList<ProfessionDB>? = arrayListOf(),
     var specialConditions: String? = null,
     var workPlace: String? = null,
     var province: String? = null,
