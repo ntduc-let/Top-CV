@@ -400,81 +400,69 @@
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/menu_experience" />
 
-            <TextView
-                android:id="@+id/txt_current_company"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/menu_current_company"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Công ty làm việc"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/title_currentJob" />
+                android:hint="Công ty làm việc"
+                app:boxBackgroundColor="@color/light_gray"
+                app:boxStrokeColor="@color/main_color"
+                app:endIconMode="none"
+                app:hintTextColor="@color/main_color"
+                app:layout_constraintTop_toBottomOf="@id/title_currentJob">
 
-            <EditText
-                android:id="@+id/edt_current_company"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:maxLines="5"
-                android:text="5"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/txt_current_company" />
+                <AutoCompleteTextView
+                    android:id="@+id/text_current_company"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
 
-            <TextView
-                android:id="@+id/txt_current_profession"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Ngành nghề"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/edt_current_company" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edt_current_profession"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/menu_current_profession"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:maxLines="5"
-                android:text="5"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/txt_current_profession" />
+                android:layout_marginTop="4dp"
+                android:hint="Ngành nghề"
+                app:boxBackgroundColor="@color/light_gray"
+                app:boxStrokeColor="@color/main_color"
+                app:endIconTint="@color/main_color"
+                app:hintTextColor="@color/main_color"
+                app:layout_constraintTop_toBottomOf="@id/menu_current_company">
 
-            <TextView
-                android:id="@+id/txt_current_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Địa chỉ"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/edt_current_profession" />
+                <AutoCompleteTextView
+                    android:id="@+id/text_current_profession"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    tools:ignore="LabelFor" />
 
-            <EditText
-                android:id="@+id/edt_current_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:maxLines="5"
-                android:text="5"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/txt_current_address" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/txt_current_certificatePhoto"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/menu_current_address"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ảnh chứng chỉ"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/edt_current_address" />
+                android:layout_marginTop="4dp"
+                android:hint="Địa chỉ"
+                app:boxBackgroundColor="@color/light_gray"
+                app:boxStrokeColor="@color/main_color"
+                app:endIconMode="none"
+                app:hintTextColor="@color/main_color"
+                app:layout_constraintTop_toBottomOf="@id/menu_current_profession">
 
-            <EditText
-                android:id="@+id/edt_current_certificatePhoto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:maxLines="5"
-                android:text="5"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/txt_current_certificatePhoto" />
+                <AutoCompleteTextView
+                    android:id="@+id/text_current_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:maxLines="5" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/title_yourWishes"
@@ -486,64 +474,73 @@
                 android:textColor="@color/main_color"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/edt_current_certificatePhoto" />
+                app:layout_constraintTop_toBottomOf="@id/menu_current_address" />
 
-            <TextView
-                android:id="@+id/txt_salary"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/menu_salary"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Mức lương"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/title_yourWishes" />
+                android:hint="Mức lương"
+                app:boxBackgroundColor="@color/light_gray"
+                app:boxStrokeColor="@color/main_color"
+                app:endIconTint="@color/main_color"
+                app:hintTextColor="@color/main_color"
+                app:layout_constraintTop_toBottomOf="@id/title_yourWishes">
 
-            <EditText
-                android:id="@+id/edt_salary"
+                <AutoCompleteTextView
+                    android:id="@+id/text_salary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    tools:ignore="LabelFor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/menu_workPlace"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:maxLines="5"
-                android:text="5"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/txt_salary" />
+                android:layout_marginTop="4dp"
+                android:hint="Khu vực làm việc"
+                app:boxBackgroundColor="@color/light_gray"
+                app:boxStrokeColor="@color/main_color"
+                app:endIconMode="none"
+                app:hintTextColor="@color/main_color"
+                app:layout_constraintTop_toBottomOf="@id/menu_salary">
 
-            <TextView
-                android:id="@+id/txt_workPlace"
+                <AutoCompleteTextView
+                    android:id="@+id/text_workPlace"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:maxLines="5" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/menu_wish"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Khu vực làm việc"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/edt_salary" />
+                android:layout_marginTop="4dp"
+                android:hint="Nguyện vọng"
+                app:boxBackgroundColor="@color/light_gray"
+                app:boxStrokeColor="@color/main_color"
+                app:endIconMode="none"
+                app:hintTextColor="@color/main_color"
+                app:layout_constraintTop_toBottomOf="@id/menu_workPlace">
 
-            <EditText
-                android:id="@+id/edt_workPlace"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:maxLines="5"
-                android:text="5"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/txt_workPlace" />
+                <AutoCompleteTextView
+                    android:id="@+id/text_wish"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:maxLines="5" />
 
-            <TextView
-                android:id="@+id/txt_wish"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Nguyện vọng"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/edt_workPlace" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edt_wish"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:maxLines="5"
-                android:text="5"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/txt_wish" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

@@ -1,7 +1,6 @@
 package com.ntduc.topcv.ui.ui.account.information.activity
 
 import android.Manifest
-import android.content.ClipData.Item
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -44,6 +43,7 @@ import com.ntduc.topcv.ui.ui.account.change_password.activity.ChangePasswordActi
 import com.ntduc.topcv.ui.ui.account.information.adapter.ItemProfessionAdapter
 import com.ntduc.topcv.ui.ui.account.information.adapter.MenuBirthYearAdapter
 import com.ntduc.topcv.ui.ui.account.information.adapter.MenuGenderAdapter
+import com.ntduc.topcv.ui.ui.account.information.adapter.MenuProfessionAdapter
 import com.ntduc.topcv.ui.ui.account.information.dialog.*
 import com.ntduc.topcv.ui.ui.dialog.LoadingDialog
 import com.ntduc.topcv.ui.ui.home.activity.MainActivity
@@ -178,6 +178,14 @@ class AccountInformationActivity : AppCompatActivity() {
         binding.layoutProfession.rcvList.adapter = adapter
         binding.layoutProfession.rcvList.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        dataExperience = getDataExperience()
+        val menuExperienceAdapter = MenuGenderAdapter(this, dataExperience)
+        binding.textExperience.setAdapter(menuExperienceAdapter)
+
+        dataSalary = getDataSalary()
+        val menuSalaryAdapter = MenuGenderAdapter(this, dataSalary)
+        binding.textSalary.setAdapter(menuSalaryAdapter)
     }
 
     private fun getDataAccount(userInfo: UserInfo) {
@@ -215,31 +223,33 @@ class AccountInformationActivity : AppCompatActivity() {
             professions.add(it.professionDB)
         }
 
+        val currentJob = JobDB(
+            address = if (binding.textCurrentAddress.text.trim().isEmpty()) null else binding.textCurrentAddress.text.trim().toString(),
+            company = if (binding.textCurrentCompany.text.trim().isEmpty()) null else binding.textCurrentCompany.text.trim().toString(),
+            profession = currentProfession
+        )
+
         val updateAccount = UserDB(
             userInfo = account!!.userInfo,
             name = binding.edtName.text.toString(),
-            birthYear = if (binding.textBirthYear.text.isEmpty()) null else binding.textBirthYear.text.toString()
-                .toInt(),
-            gender = if (binding.textGender.text.isEmpty()) null else binding.textGender.text.toString(),
-            height = if (binding.textHeight.text.isEmpty()) null else binding.textHeight.text.toString()
-                .toInt(),
-            weight = if (binding.textWeight.text.isEmpty()) null else binding.textWeight.text.toString()
-                .toInt(),
-            experience = if (binding.textExperience.text.isEmpty()) null else binding.textExperience.text.toString(),
-            nameOfHighSchool = if (binding.textNameOfHighSchool.text.isEmpty()) null else binding.textNameOfHighSchool.text.toString(),
-            numberHousehold = if (binding.textNumberHousehold.text.isEmpty()) null else binding.textNumberHousehold.text.toString(),
-            idCCCD = if (binding.textCccd.text.isEmpty()) null else binding.textCccd.text.toString(),
-            hobby = if (binding.textHobby.text.isEmpty()) null else binding.textHobby.text.toString(),
-            personality = if (binding.textPersonality.text.isEmpty()) null else binding.textPersonality.text.toString(),
-            hometown = if (binding.textHometown.text.isEmpty()) null else binding.textHometown.text.toString(),
-            levelEducational = if (binding.textLevelEducational.text.isEmpty()) null else binding.textLevelEducational.text.toString()
-                .toInt(),
-            wish = null,
+            birthYear = if (binding.textBirthYear.text.trim().isEmpty()) null else binding.textBirthYear.text.trim().toString().toInt(),
+            gender = if (binding.textGender.text.trim().isEmpty()) null else binding.textGender.text.trim().toString(),
+            height = if (binding.textHeight.text.trim().isEmpty()) null else binding.textHeight.text.trim().toString().toInt(),
+            weight = if (binding.textWeight.text.trim().isEmpty()) null else binding.textWeight.text.trim().toString().toInt(),
+            experience = if (binding.textExperience.text.trim().isEmpty()) null else binding.textExperience.text.trim().toString(),
+            nameOfHighSchool = if (binding.textNameOfHighSchool.text.trim().isEmpty()) null else binding.textNameOfHighSchool.text.trim().toString(),
+            numberHousehold = if (binding.textNumberHousehold.text.trim().isEmpty()) null else binding.textNumberHousehold.text.trim().toString(),
+            idCCCD = if (binding.textCccd.text.trim().isEmpty()) null else binding.textCccd.text.trim().toString(),
+            hobby = if (binding.textHobby.text.trim().isEmpty()) null else binding.textHobby.text.trim().toString(),
+            personality = if (binding.textPersonality.text.trim().isEmpty()) null else binding.textPersonality.text.trim().toString(),
+            hometown = if (binding.textHometown.text.trim().isEmpty()) null else binding.textHometown.text.trim().toString(),
+            levelEducational = if (binding.textLevelEducational.text.trim().isEmpty()) null else binding.textLevelEducational.text.trim().toString().toInt(),
+            wish = if (binding.textWish.text.trim().isEmpty()) null else binding.textWish.text.trim().toString(),
             professions = professions,
-            specialConditions = null,
-            workPlace = null,
-            province = null,
-            currentJob = null
+            specialConditions = if (binding.textSpecialConditions.text.trim().isEmpty()) null else binding.textSpecialConditions.text.trim().toString(),
+            workPlace = if (binding.textWorkPlace.text.trim().isEmpty()) null else binding.textWorkPlace.text.trim().toString(),
+            salary = if (binding.textSalary.text.trim().isEmpty()) null else binding.textSalary.text.trim().toString(),
+            currentJob = currentJob
         )
         db.collection(account!!.userInfo!!._id!!).document("account")
             .set(updateAccount)
@@ -307,6 +317,12 @@ class AccountInformationActivity : AppCompatActivity() {
                         if (professionsDB != null) {
                             professions = arrayListOf()
                             professionsDB.professions?.forEach {
+                                if (account!!.currentJob != null
+                                    && account!!.currentJob!!.profession != null
+                                    && account!!.currentJob!!.profession!!.name == it.name){
+                                    currentProfession = it
+                                }
+
                                 val profession = Profession(it)
                                 if (account!!.professions != null && account!!.professions!!.isNotEmpty()) {
                                     if (account!!.professions!!.contains(it)){
@@ -319,9 +335,18 @@ class AccountInformationActivity : AppCompatActivity() {
                             val result = professions.filter {
                                 it.isSelected
                             }
+
                             withContext(Dispatchers.Main){
                                 binding.layoutLoading.root.visibility = View.GONE
                                 adapter.updateData(result)
+
+                                dataCurrentProfession = professions
+                                val menuProfessionAdapter = MenuProfessionAdapter(this@AccountInformationActivity, dataCurrentProfession)
+                                binding.textCurrentProfession.setAdapter(menuProfessionAdapter)
+                                if (currentProfession!= null) binding.textCurrentProfession.setText(currentProfession!!.name)
+                                binding.textCurrentProfession.setOnItemClickListener { _, _, position, _ ->
+                                    currentProfession = professionsDB.professions!![position]
+                                }
                             }
 
                         } else {
@@ -364,6 +389,14 @@ class AccountInformationActivity : AppCompatActivity() {
         if (account!!.hometown != null) binding.textHometown.setText(account!!.hometown!!.toString())
         if (account!!.levelEducational != null) binding.textLevelEducational.setText(account!!.levelEducational!!.toString())
         if (account!!.specialConditions != null) binding.textSpecialConditions.setText(account!!.specialConditions!!.toString())
+        if (account!!.experience != null) binding.textExperience.setText(account!!.experience!!.toString())
+        if (account!!.currentJob != null){
+            if (account!!.currentJob!!.address != null) binding.textCurrentAddress.setText(account!!.currentJob!!.address)
+            if (account!!.currentJob!!.company != null) binding.textCurrentCompany.setText(account!!.currentJob!!.company)
+        }
+        if (account!!.salary != null) binding.textSalary.setText(account!!.salary!!.toString())
+        if (account!!.workPlace != null) binding.textWorkPlace.setText(account!!.workPlace!!.toString())
+        if (account!!.wish != null) binding.textWish.setText(account!!.wish!!.toString())
     }
 
     private fun openChooseImageDialog() {
@@ -453,6 +486,37 @@ class AccountInformationActivity : AppCompatActivity() {
         result.add("Nữ")
         result.add("Nam")
         result.add("Không xác định")
+
+        return result
+    }
+
+    private fun getDataExperience(): ArrayList<String> {
+        val result = arrayListOf<String>()
+        result.add("Chưa có kinh nghiệm")
+        result.add("Dưới 1 năm")
+        result.add("1 năm")
+        result.add("2 năm")
+        result.add("3 năm")
+        result.add("4 năm")
+        result.add("5 năm")
+        result.add("Trên 5 năm")
+
+        return result
+    }
+
+    private fun getDataSalary(): ArrayList<String> {
+        val result = arrayListOf<String>()
+        result.add("Dưới 3 triệu")
+        result.add("3 - 5 triệu")
+        result.add("5 - 7 triệu")
+        result.add("7 - 10 triệu")
+        result.add("10 - 12 triệu")
+        result.add("12 - 15 triệu")
+        result.add("15 - 20 triệu")
+        result.add("20 - 25 triệu")
+        result.add("25 - 30 triệu")
+        result.add("Trên 30 triệu")
+        result.add("Thỏa thuận")
 
         return result
     }
@@ -593,6 +657,10 @@ class AccountInformationActivity : AppCompatActivity() {
 
     private var dataBirthYear: ArrayList<Int> = arrayListOf()
     private var dataGender: ArrayList<String> = arrayListOf()
+    private var dataExperience: ArrayList<String> = arrayListOf()
+    private var dataCurrentProfession: ArrayList<Profession> = arrayListOf()
+    private var currentProfession: ProfessionDB? = null
+    private var dataSalary: ArrayList<String> = arrayListOf()
 
     private var mPrefs: Prefs? = null
     private var account: UserDB? = null

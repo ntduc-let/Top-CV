@@ -23,6 +23,6 @@ data class UserDB(
     var professions: ArrayList<ProfessionDB>? = arrayListOf(),
     var specialConditions: String? = null,
     var workPlace: String? = null,
-    var province: String? = null,
+    var salary: String? = null,
     var currentJob: JobDB? = null
 ) : Parcelable
