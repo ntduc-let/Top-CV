@@ -157,7 +157,7 @@ class EditCVActivity : AppCompatActivity(), SkillBottomDialog.Callback,
                         val deleteTask = avatarRef.delete()
                         deleteTask.addOnSuccessListener {
                             loadingDialog?.dismiss()
-                            shortToast("Tạo CV thành công")
+                            shortToast("Cập nhật CV thành công")
 
                             val intent = Intent(this, MainActivity::class.java)
                             setResult(RESULT_OK, intent)
@@ -170,7 +170,7 @@ class EditCVActivity : AppCompatActivity(), SkillBottomDialog.Callback,
                         val uploadTask = avatarRef.putFile(uriCamera!!)
                         uploadTask.addOnSuccessListener {
                             loadingDialog?.dismiss()
-                            shortToast("Tạo CV thành công")
+                            shortToast("Cập nhật CV thành công")
 
                             val intent = Intent(this, MainActivity::class.java)
                             setResult(RESULT_OK, intent)
@@ -183,7 +183,7 @@ class EditCVActivity : AppCompatActivity(), SkillBottomDialog.Callback,
                     }
                 } else {
                     loadingDialog?.dismiss()
-                    shortToast("Tạo CV thành công")
+                    shortToast("Cập nhật CV thành công")
 
                     val intent = Intent(this, MainActivity::class.java)
                     setResult(RESULT_OK, intent)

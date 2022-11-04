@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initData() {
-        val userDB = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        userDB = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(KEY_USER_DB, UserDB::class.java)
         } else {
             intent.getParcelableExtra(KEY_USER_DB) as UserDB?
@@ -89,6 +89,7 @@ class MainActivity : AppCompatActivity() {
         const val KEY_USER_DB = "KEY_USER_DB"
         const val KEY_USER_CV = "KEY_USER_CV"
         const val KEY_JOB = "KEY_JOB"
+        var userDB: UserDB? = null
     }
 
     private lateinit var binding: ActivityMainBinding
