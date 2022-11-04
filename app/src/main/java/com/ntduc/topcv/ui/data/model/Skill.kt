@@ -5,6 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Skill(
-    var name: String? = null,
-    var descriptor: String? = null
+    var name: String = "",
+    var descriptor: String = ""
 ) : Parcelable

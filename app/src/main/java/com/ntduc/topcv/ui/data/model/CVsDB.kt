@@ -5,5 +5,5 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class CVsDB(
-    var listCV: ArrayList<CVDB>? = arrayListOf()
+    var listCV: ArrayList<CVDB> = arrayListOf()
 ) : Parcelable

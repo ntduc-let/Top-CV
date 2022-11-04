@@ -5,6 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Certificate(
-    var name: String? = null,
-    var time: String? = null
+    var name: String = "",
+    var time: String = ""
 ) : Parcelable

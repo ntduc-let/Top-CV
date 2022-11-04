@@ -24,13 +24,13 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="16dp"
-        android:background="@color/light_gray"
-        android:drawablePadding="8dp"
+        android:background="#33257EFE"
         android:ellipsize="end"
         android:hint="Tiêu đề CV"
         android:inputType="text"
         android:maxLines="1"
         android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
         android:textAlignment="center"
         android:textColor="@color/main_color"
         android:textColorHint="@color/gray"
@@ -44,6 +44,7 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <include
+        android:id="@+id/layout_cv"
         layout="@layout/layout_cv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
