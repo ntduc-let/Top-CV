@@ -1,5 +1,6 @@
 package com.ntduc.topcv.ui.ui.search.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -17,6 +18,8 @@ import com.ntduc.topcv.databinding.ActivitySearchJobBinding
 import com.ntduc.topcv.ui.data.model.JobGlobal
 import com.ntduc.topcv.ui.data.model.ProfessionDB
 import com.ntduc.topcv.ui.data.model.ProfessionsDB
+import com.ntduc.topcv.ui.ui.home.activity.MainActivity
+import com.ntduc.topcv.ui.ui.info_job.activity.InfoJobActivity
 import com.ntduc.topcv.ui.ui.search.adapter.JobSearchAdapter
 import com.ntduc.topcv.ui.ui.search.dialog.FilterDialog
 import kotlinx.coroutines.Dispatchers
@@ -142,6 +145,12 @@ class SearchJobActivity : AppCompatActivity() {
                 }
             }
         })
+
+        adapter.setOnClickItemListener {
+            val intent = Intent(this, InfoJobActivity::class.java)
+            intent.putExtra(MainActivity.KEY_JOB, it)
+            startActivity(intent)
+        }
     }
 
     private fun filter(text: String) {

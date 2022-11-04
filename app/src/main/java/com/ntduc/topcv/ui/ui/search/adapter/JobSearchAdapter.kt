@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.ntduc.topcv.R
 import com.ntduc.topcv.databinding.ItemJobSearchBinding
 import com.ntduc.topcv.ui.data.model.JobGlobal
+import com.ntduc.topcv.ui.data.model.Profession
 import com.ntduc.topcv.ui.data.model.ProfessionDB
 
 class JobSearchAdapter(
@@ -16,7 +17,8 @@ class JobSearchAdapter(
     var listJob: List<JobGlobal> = listOf()
 ) : RecyclerView.Adapter<JobSearchAdapter.JobViewHolder>() {
 
-    inner class JobViewHolder(binding: ItemJobSearchBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class JobViewHolder(binding: ItemJobSearchBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         internal val binding: ItemJobSearchBinding
 
         init {
@@ -43,6 +45,9 @@ class JobSearchAdapter(
         holder.binding.txtDescription.text = item.infoCompanyGlobal.name
         holder.binding.txtSalary.text = item.infoJobGlobal.salary
         holder.binding.txtLocation.text = item.infoJobGlobal.address
+        holder.binding.root.setOnClickListener {
+            onClickItemListener?.let { it(item) }
+        }
     }
 
     override fun getItemCount(): Int {
@@ -53,5 +58,10 @@ class JobSearchAdapter(
     fun updateData(list: List<JobGlobal>) {
         listJob = list
         notifyDataSetChanged()
+    }
+
+    private var onClickItemListener: ((JobGlobal) -> Unit)? = null
+    fun setOnClickItemListener(listener: (JobGlobal) -> Unit) {
+        onClickItemListener = listener
     }
 }
