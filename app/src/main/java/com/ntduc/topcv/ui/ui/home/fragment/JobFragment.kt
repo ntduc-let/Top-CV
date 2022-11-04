@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.ntduc.toastutils.shortToast
 import com.ntduc.topcv.R
 import com.ntduc.topcv.databinding.FragmentJobBinding
 import com.ntduc.topcv.ui.data.model.UserDB
@@ -23,6 +24,7 @@ import com.ntduc.topcv.ui.ui.home.adapter.GroupJobAdapter
 import com.ntduc.topcv.ui.ui.home.model.GroupJob
 import com.ntduc.topcv.ui.ui.home.model.Job
 import com.ntduc.topcv.ui.ui.login.activity.LoginActivity
+import com.ntduc.topcv.ui.ui.search.activity.SearchJobActivity
 import com.ntduc.topcv.ui.utils.Prefs
 
 class JobFragment : Fragment() {
@@ -53,6 +55,14 @@ class JobFragment : Fragment() {
                 accountLauncher.launch(Intent(requireContext(), AccountInformationActivity::class.java))
             }else{
                 loginLauncher.launch(Intent(requireContext(), LoginActivity::class.java))
+            }
+        }
+
+        binding.layoutSearchJob.root.setOnClickListener {
+            if (mPrefs!!.isLogin){
+                startActivity(Intent(requireContext(), SearchJobActivity::class.java))
+            }else{
+                requireContext().shortToast("Vui lòng đăng nhập để sử dụng tính năng này")
             }
         }
     }

@@ -5,5 +5,5 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ProfessionsDB(
-    var professions: ArrayList<ProfessionDB>? = arrayListOf()
+    var professions: ArrayList<ProfessionDB> = arrayListOf()
 ) : Parcelable
