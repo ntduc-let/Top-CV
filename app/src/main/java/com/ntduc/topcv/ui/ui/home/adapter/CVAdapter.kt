@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ntduc.topcv.databinding.ItemCvBinding
 import com.ntduc.topcv.ui.data.model.CVDB
+import com.ntduc.topcv.ui.data.model.Skill
 
 class CVAdapter(
     val context: Context,
@@ -32,6 +33,17 @@ class CVAdapter(
 
         holder.binding.txtTitle.text = item.title
         holder.binding.txtUpdate.text = "Cập nhật lần cuối: ${item.update_at}"
+
+        holder.binding.root.setOnClickListener {
+            onClickItemListener?.let {
+                it(item)
+            }
+        }
+        holder.binding.btnDelete.setOnClickListener {
+            onDeleteItemListener?.let {
+                it(item)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
@@ -42,5 +54,15 @@ class CVAdapter(
     fun updateData(list: List<CVDB>) {
         listCV = list
         notifyDataSetChanged()
+    }
+
+    private var onClickItemListener: ((CVDB) -> Unit)? = null
+    fun setOnClickItemListener(listener: (CVDB) -> Unit) {
+        onClickItemListener = listener
+    }
+
+    private var onDeleteItemListener: ((CVDB) -> Unit)? = null
+    fun setOnDeleteItemListener(listener: (CVDB) -> Unit) {
+        onDeleteItemListener = listener
     }
 }
