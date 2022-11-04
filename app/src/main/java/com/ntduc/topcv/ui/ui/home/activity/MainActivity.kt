@@ -15,9 +15,7 @@ import com.ntduc.contextutils.inflater
 import com.ntduc.toastutils.shortToast
 import com.ntduc.topcv.R
 import com.ntduc.topcv.databinding.ActivityMainBinding
-import com.ntduc.topcv.ui.data.model.ProfessionDB
-import com.ntduc.topcv.ui.data.model.ProfessionsDB
-import com.ntduc.topcv.ui.data.model.UserDB
+import com.ntduc.topcv.ui.data.model.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         init()
 
 //        addDATA()
+//        addJOB()
     }
 
     private fun init() {
@@ -169,5 +168,51 @@ class MainActivity : AppCompatActivity() {
         professionsDB.professions!!.add(ProfessionDB("67", "Ngành nghề khác"))
 
         db.collection("top_cv_global").document("profession_global").set(professionsDB)
+    }
+
+    private fun addJOB() {
+        val db = Firebase.firestore
+        for (i in 1..100){
+            val jobGlobal = JobGlobal()
+            jobGlobal.id = i.toString()
+
+            val infoJobGlobal = InfoJobGlobal()
+            infoJobGlobal.salary = "Thỏa thuận"
+            infoJobGlobal.number = "1 người"
+            infoJobGlobal.gender = "Nam"
+            infoJobGlobal.experience = "Chưa có kinh nghiệm"
+            infoJobGlobal.position = "Kinh doanh / Bán hàng"
+            infoJobGlobal.address = "Hà Nội, Tòa Osaka Complex, Ngõ 48 Ngọc Hồi, Hoàng Liệt, Hoàng Mai"
+            infoJobGlobal.description = "Thường xuyên tiếp xúc, chăm sóc khách hàng, nắm rõ các thông tin của khách hàng.\n" +
+                    "Tiếp nhận các phản ánh và yêu cầu của khách hàng về sản phẩm của công ty, công tác giao hàng....\n" +
+                    "Báo cáo với Trưởng phòng về những khiếu nại và nhu cầu dịch vụ của khách hàng để tìm ra hướng giải quyết; duy trì và phát triển các mối quan hệ với khách hàng.\n" +
+                    "Tư vấn các giải pháp thiết bị y tế toàn diện phù hợp với điều kiện từng khách hàng.\n" +
+                    "Hiểu rõ công năng, tác dụng, giá, ưu nhược điểm của sản phẩm, sản phẩm tương tự, sản phẩm của đối thủ cạnh tranh.\n" +
+                    "Nhận một phần thị trường của công ty, đảm bảo doanh số cam kết cũng như chịu trách nhiệm quản lý thị trường đó.\n" +
+                    "Thực hiện các báo cáo kinh doanh theo ngày, tuần tháng và theo yêu cầu của cấp trên Tìm hiểu và nắm rõ các sản phẩm thiết bị Công ty cung cấp."
+            infoJobGlobal.request = "Kỹ năng làm việc độc lập và theo nhóm\n" +
+                    "Có ý thức trách nhiệm trong công việc\n" +
+                    "Nhanh nhẹn trung thực, cẩn thận\n" +
+                    "Sử dụng cơ bản MS office Có tinh thần cầu tiến và cầu thị"
+            infoJobGlobal.benefit = "Định kỳ tăng lương 2 lần/năm\n" +
+                    "Được đóng BHXH sau 2 tháng thử việc\n" +
+                    "Hưởng các quyền lợi của nhân viên như du lịch, khám sức khỏe, sinh nhật, lễ tết....\n" +
+                    "Đào tạo về sản phẩm trong nước và quốc tế"
+            jobGlobal.infoJobGlobal = infoJobGlobal
+
+            val infoCompanyGlobal = InfoCompanyGlobal()
+            infoCompanyGlobal.src = ""
+            infoCompanyGlobal.name = "Công ty Cổ phần vật tư và trang thiết bị y tế Cường An"
+            infoCompanyGlobal.address = "Số 7, ngách 111/22, Cù Chính Lan, P. Khương Mai, Q. Thanh Xuân, TP. Hà Nội"
+            infoCompanyGlobal.website = "google.com.vn"
+            infoCompanyGlobal.description = "Công Ty CP Vật Tư Và Trang Thiết Bị Y Tế CƯỜNG AN\n" +
+                    "Số 7, ngách 111/22, Cù Chính Lan, P. Khương Mai, Q. Thanh Xuân, TP. Hà Nội Tên người liên hệ: Phòng Nhân Sự\n" +
+                    "Qui mô công ty: 30 - 50\n" +
+                    "Công ty Cổ Phần Vật Tư Và Trang Thiết Bị Y Tế Cường An được thành lập ngày 26/06/2013 bởi những người có nhiều kinh nghiệm trong ngành Y Tế và Chăm sóc sức khỏe. Với mục tiêu đầu tư và cung cấp các giải pháp y tế, công nghệ hàng đầu với giá trị cộng đồng cao nhất, Cường An đã và đang khẳng định vị thế của mình trong ngành Y Tế Việt Nam.\n" +
+                    "Đến năm 2020, Cường An phấn đấu trở thành 1 trong 50 Công ty đứng đầu khu vực ASEAN trong lĩnh vực cung cấp giải pháp y tế toàn diện, bao gồm hệ thống nhũ ảnh, hệ thống nội soi, hệ thống X-quang và các vật tư đi kèm. Trở thành tổ chức có tinh thần đoàn kết sâu đậm, tinh thần học hỏi mạnh mẽ, tinh thần cầu tiến tích cực và sự yêu thương đùm bọc lẫn nhau dựa trên những tôn chỉ hoạt động và văn hóa."
+            jobGlobal.infoCompanyGlobal = infoCompanyGlobal
+
+            db.collection("top_cv_global").document("job_global_$i").set(jobGlobal)
+        }
     }
 }
