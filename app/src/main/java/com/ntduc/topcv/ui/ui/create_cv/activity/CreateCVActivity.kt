@@ -11,12 +11,14 @@ import com.ntduc.datetimeutils.currentCalendar
 import com.ntduc.toastutils.shortToast
 import com.ntduc.topcv.R
 import com.ntduc.topcv.databinding.ActivityCreateCvActivityBinding
-import com.ntduc.topcv.ui.data.model.CVDB
-import com.ntduc.topcv.ui.data.model.UserDB
+import com.ntduc.topcv.ui.data.model.*
 import com.ntduc.topcv.ui.ui.create_cv.adapter.*
+import com.ntduc.topcv.ui.ui.create_cv.dialog.*
 import com.ntduc.topcv.ui.ui.home.activity.MainActivity
 
-class CreateCVActivity : AppCompatActivity() {
+class CreateCVActivity : AppCompatActivity(), SkillBottomDialog.Callback,
+    ExperienceBottomDialog.Callback, EducationBottomDialog.Callback, WorkBottomDialog.Callback,
+    CertificateBottomDialog.Callback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateCvActivityBinding.inflate(inflater)
@@ -28,7 +30,52 @@ class CreateCVActivity : AppCompatActivity() {
     private fun init() {
         initData()
         initView()
-//        initEvent()
+        initEvent()
+    }
+
+    private fun initEvent() {
+        binding.layoutBottom.btnCancel.setOnClickListener {
+            onBackPressed()
+        }
+
+        binding.layoutBottom.btnSave.setOnClickListener {
+//            val intent = Intent(this, MainActivity::class.java)
+        }
+
+        binding.layoutCv.layoutSkill.setOnClickListener {
+            val dialog = SkillBottomDialog()
+            dialog.setCallback(this)
+            dialog.setListSkill(itemSkillAdapter.list)
+            dialog.show(supportFragmentManager, "SkillBottomDialog")
+        }
+
+        binding.layoutCv.layoutExperience.setOnClickListener {
+            val dialog = ExperienceBottomDialog()
+            dialog.setCallback(this)
+            dialog.setListExperience(itemExperienceAdapter.list)
+            dialog.show(supportFragmentManager, "SkillBottomDialog")
+        }
+
+        binding.layoutCv.layoutEducation.setOnClickListener {
+            val dialog = EducationBottomDialog()
+            dialog.setCallback(this)
+            dialog.setListEducation(itemEducationAdapter.list)
+            dialog.show(supportFragmentManager, "EducationBottomDialog")
+        }
+
+        binding.layoutCv.layoutWork.setOnClickListener {
+            val dialog = WorkBottomDialog()
+            dialog.setCallback(this)
+            dialog.setListWork(itemWorkAdapter.list)
+            dialog.show(supportFragmentManager, "WorkBottomDialog")
+        }
+
+        binding.layoutCv.layoutCertificate.setOnClickListener {
+            val dialog = CertificateBottomDialog()
+            dialog.setCallback(this)
+            dialog.setListCertificate(itemCertificateAdapter.list)
+            dialog.show(supportFragmentManager, "CertificateBottomDialog")
+        }
     }
 
     private fun initView() {
@@ -99,8 +146,27 @@ class CreateCVActivity : AppCompatActivity() {
     private lateinit var itemEducationAdapter: ItemEducationAdapter
     private lateinit var itemWorkAdapter: ItemWorkAdapter
     private lateinit var itemCertificateAdapter: ItemCertificateAdapter
-
+    //    private lateinit var db: FirebaseFirestore
 
     private var userDB: UserDB? = null
-//    private lateinit var db: FirebaseFirestore
+
+    override fun onUpdateSkill(list: ArrayList<Skill>) {
+        itemSkillAdapter.updateData(list)
+    }
+
+    override fun onUpdateExperience(list: ArrayList<Experience>) {
+        itemExperienceAdapter.updateData(list)
+    }
+
+    override fun onUpdateEducation(list: ArrayList<Education>) {
+        itemEducationAdapter.updateData(list)
+    }
+
+    override fun onUpdateWork(list: ArrayList<Work>) {
+        itemWorkAdapter.updateData(list)
+    }
+
+    override fun onUpdateCertificate(list: ArrayList<Certificate>) {
+        itemCertificateAdapter.updateData(list)
+    }
 }
