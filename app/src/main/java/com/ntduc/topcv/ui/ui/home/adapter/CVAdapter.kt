@@ -31,7 +31,7 @@ class CVAdapter(
         val item = listCV[position]
 
         holder.binding.txtTitle.text = item.title
-        holder.binding.txtUpdate.text = item.update_at
+        holder.binding.txtUpdate.text = "Cập nhật lần cuối: ${item.update_at}"
     }
 
     override fun getItemCount(): Int {

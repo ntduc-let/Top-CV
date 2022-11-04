@@ -12,16 +12,24 @@ import android.os.Environment
 import android.os.StrictMode
 import android.provider.MediaStore
 import android.provider.Settings
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import com.ntduc.androidimagecropper.CropImage
 import com.ntduc.androidimagecropper.CropImageView
 import com.ntduc.contextutils.inflater
 import com.ntduc.datetimeutils.currentCalendar
+import com.ntduc.datetimeutils.currentMillis
+import com.ntduc.datetimeutils.getDateTimeFromMillis
 import com.ntduc.toastutils.shortToast
 import com.ntduc.topcv.BuildConfig
 import com.ntduc.topcv.R
@@ -32,9 +40,13 @@ import com.ntduc.topcv.ui.ui.account.information.dialog.RequestPermissionCameraD
 import com.ntduc.topcv.ui.ui.account.information.dialog.RequestPermissionReadAllFileDialog
 import com.ntduc.topcv.ui.ui.create_cv.adapter.*
 import com.ntduc.topcv.ui.ui.create_cv.dialog.*
+import com.ntduc.topcv.ui.ui.dialog.LoadingDialog
 import com.ntduc.topcv.ui.ui.home.activity.MainActivity
+import com.ntduc.topcv.ui.ui.home.fragment.CVFragment
 import com.ntduc.topcv.ui.utils.PermissionUtil
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CreateCVActivity : AppCompatActivity(), SkillBottomDialog.Callback,
     ExperienceBottomDialog.Callback, EducationBottomDialog.Callback, WorkBottomDialog.Callback,
@@ -59,7 +71,11 @@ class CreateCVActivity : AppCompatActivity(), SkillBottomDialog.Callback,
         }
 
         binding.layoutBottom.btnSave.setOnClickListener {
-//            val intent = Intent(this, MainActivity::class.java)
+            if (binding.txtTitle.text.trim().isEmpty()) {
+                shortToast("Tiêu đề CV không được để trống")
+            } else {
+                addCV()
+            }
         }
 
         binding.layoutCv.cvAva.setOnClickListener {
@@ -117,6 +133,66 @@ class CreateCVActivity : AppCompatActivity(), SkillBottomDialog.Callback,
         }
     }
 
+    private fun addCV() {
+        loadingDialog = LoadingDialog()
+        loadingDialog!!.show(supportFragmentManager, "LoadingDialog")
+
+        cvDB.update_at = getDateTimeFromMillis(currentCalendar.timeInMillis, "hh:mm - dd/MM/yyyy")
+        cvDB.title = binding.edtTitleCv.text.trim().toString()
+        CVFragment.listCV.add(cvDB)
+        val cVsDB = CVsDB(listCV = CVFragment.listCV)
+        db.collection(userDB!!.userInfo!!._id!!).document("cv")
+            .set(cVsDB)
+            .addOnSuccessListener {
+                Log.d("ntduc_debug", "DocumentSnapshot successfully written!")
+                if (isChangeAvatar) {
+                    val storageRef = storage.reference
+                    val avatarRef =
+                        storageRef.child("${userDB!!.userInfo!!._id!!}/cv/${cvDB.id}/avatar/avatar.jpg")
+                    if (isDeleteAvatar) {
+                        val deleteTask = avatarRef.delete()
+                        deleteTask.addOnSuccessListener {
+                            loadingDialog?.dismiss()
+                            shortToast("Tạo CV thành công")
+
+                            val intent = Intent(this, MainActivity::class.java)
+                            setResult(RESULT_OK, intent)
+                            finish()
+                        }.addOnFailureListener {
+                            loadingDialog?.dismiss()
+                            shortToast("Cập nhật ảnh đại diện thất bại")
+                        }
+                    } else {
+                        val uploadTask = avatarRef.putFile(uriCamera!!)
+                        uploadTask.addOnSuccessListener {
+                            loadingDialog?.dismiss()
+                            shortToast("Tạo CV thành công")
+
+                            val intent = Intent(this, MainActivity::class.java)
+                            setResult(RESULT_OK, intent)
+                            finish()
+                        }.addOnFailureListener {
+                            loadingDialog?.dismiss()
+                            shortToast("Cập nhật ảnh đại diện thất bại")
+                            onBackPressed()
+                        }
+                    }
+                } else {
+                    loadingDialog?.dismiss()
+                    shortToast("Tạo CV thành công")
+
+                    val intent = Intent(this, MainActivity::class.java)
+                    setResult(RESULT_OK, intent)
+                    finish()
+                }
+            }
+            .addOnFailureListener { e ->
+                loadingDialog?.dismiss()
+                CVFragment.listCV.remove(cvDB)
+                shortToast("Có lỗi xảy ra. Vui lòng thử lại")
+            }
+    }
+
     private fun initView() {
         binding.edtTitleCv.setText(cvDB.title)
 
@@ -141,30 +217,46 @@ class CreateCVActivity : AppCompatActivity(), SkillBottomDialog.Callback,
         binding.layoutCv.txtTitleSkill.text = cvDB.skillCV.title
         itemSkillAdapter = ItemSkillAdapter(this, ItemSkillAdapter.MODE_SHOW, cvDB.skillCV.skills)
         binding.layoutCv.rcvSkill.adapter = itemSkillAdapter
-        binding.layoutCv.rcvSkill.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.layoutCv.rcvSkill.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         binding.layoutCv.txtTitleExperience.text = cvDB.experienceCV.title
-        itemExperienceAdapter = ItemExperienceAdapter(this, ItemExperienceAdapter.MODE_SHOW, cvDB.experienceCV.experiences)
+        itemExperienceAdapter = ItemExperienceAdapter(
+            this,
+            ItemExperienceAdapter.MODE_SHOW,
+            cvDB.experienceCV.experiences
+        )
         binding.layoutCv.rcvExperience.adapter = itemExperienceAdapter
-        binding.layoutCv.rcvExperience.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.layoutCv.rcvExperience.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         binding.layoutCv.txtTitleEducation.text = cvDB.educationCV.title
-        itemEducationAdapter = ItemEducationAdapter(this, ItemEducationAdapter.MODE_SHOW, cvDB.educationCV.educations)
+        itemEducationAdapter =
+            ItemEducationAdapter(this, ItemEducationAdapter.MODE_SHOW, cvDB.educationCV.educations)
         binding.layoutCv.rcvEducation.adapter = itemEducationAdapter
-        binding.layoutCv.rcvEducation.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.layoutCv.rcvEducation.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         binding.layoutCv.txtTitleWork.text = cvDB.workCV.title
         itemWorkAdapter = ItemWorkAdapter(this, ItemWorkAdapter.MODE_SHOW, cvDB.workCV.works)
         binding.layoutCv.rcvWork.adapter = itemWorkAdapter
-        binding.layoutCv.rcvWork.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.layoutCv.rcvWork.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         binding.layoutCv.txtTitleCertificate.text = cvDB.certificateCV.title
-        itemCertificateAdapter = ItemCertificateAdapter(this, ItemCertificateAdapter.MODE_SHOW, cvDB.certificateCV.certificates)
+        itemCertificateAdapter = ItemCertificateAdapter(
+            this,
+            ItemCertificateAdapter.MODE_SHOW,
+            cvDB.certificateCV.certificates
+        )
         binding.layoutCv.rcvCertificate.adapter = itemCertificateAdapter
-        binding.layoutCv.rcvCertificate.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.layoutCv.rcvCertificate.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
     private fun initData() {
+        db = Firebase.firestore
+        storage = Firebase.storage
         cvDB = CVDB(id = currentCalendar.timeInMillis.toString())
         userDB = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(MainActivity.KEY_USER_DB, UserDB::class.java)
@@ -172,7 +264,7 @@ class CreateCVActivity : AppCompatActivity(), SkillBottomDialog.Callback,
             intent.getParcelableExtra(MainActivity.KEY_USER_DB) as UserDB?
         }
 
-        if (userDB == null){
+        if (userDB == null) {
             shortToast("Đã xảy ra lỗi. Vui lòng thử lại")
             finish()
         }
@@ -245,7 +337,8 @@ class CreateCVActivity : AppCompatActivity(), SkillBottomDialog.Callback,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             )
-            requestPermissions(permissions,
+            requestPermissions(
+                permissions,
                 REQUEST_PERMISSION_READ_WRITE
             )
         }
@@ -380,12 +473,14 @@ class CreateCVActivity : AppCompatActivity(), SkillBottomDialog.Callback,
     private lateinit var itemEducationAdapter: ItemEducationAdapter
     private lateinit var itemWorkAdapter: ItemWorkAdapter
     private lateinit var itemCertificateAdapter: ItemCertificateAdapter
-    //    private lateinit var db: FirebaseFirestore
+    private lateinit var db: FirebaseFirestore
+    private lateinit var storage: FirebaseStorage
 
     private var userDB: UserDB? = null
     private var uriCamera: Uri? = null
     private var isChangeAvatar: Boolean = false
     private var isDeleteAvatar: Boolean = false
+    private var loadingDialog: LoadingDialog? = null
 
     private val imageCaptureLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {

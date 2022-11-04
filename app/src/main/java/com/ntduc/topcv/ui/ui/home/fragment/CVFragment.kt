@@ -2,11 +2,12 @@ package com.ntduc.topcv.ui.ui.home.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
@@ -51,7 +52,7 @@ class CVFragment : Fragment() {
             if (mPrefs!!.isLogin && userDB != null) {
                 val intent = Intent(requireContext(), CreateCVActivity::class.java)
                 intent.putExtra(MainActivity.KEY_USER_DB, userDB)
-                startActivity(intent)
+                saveCVLauncher.launch(intent)
             } else {
                 requireContext().shortToast("Vui lòng đăng nhập để thực hiện được tính năng này")
             }
@@ -61,7 +62,7 @@ class CVFragment : Fragment() {
             if (mPrefs!!.isLogin && userDB != null) {
                 val intent = Intent(requireContext(), CreateCVActivity::class.java)
                 intent.putExtra(MainActivity.KEY_USER_DB, userDB)
-                startActivity(intent)
+                saveCVLauncher.launch(intent)
             } else {
                 requireContext().shortToast("Vui lòng đăng nhập để thực hiện được tính năng này")
             }
@@ -92,7 +93,7 @@ class CVFragment : Fragment() {
                 if (document != null) {
                     val cVsDB = document.toObject<CVsDB>()
                     if (cVsDB != null) {
-                        this.listCV = cVsDB.listCV
+                        listCV = cVsDB.listCV
                         binding.layoutLoading.root.visibility = View.GONE
 
                         if (listCV.isEmpty()) {
@@ -102,7 +103,7 @@ class CVFragment : Fragment() {
                             adapter.updateData(arrayListOf())
                         } else {
                             binding.layoutNoCv.root.visibility = View.GONE
-                            binding.layoutListCv.root.visibility = View.GONE
+                            binding.layoutListCv.root.visibility = View.VISIBLE
 
                             adapter.updateData(listCV)
                         }
@@ -128,6 +129,10 @@ class CVFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
+    companion object{
+        var listCV: ArrayList<CVDB> = arrayListOf()
+    }
+
     private lateinit var binding: FragmentCvBinding
     private lateinit var adapter: CVAdapter
     private lateinit var viewModel: MainActivityVM
@@ -135,6 +140,21 @@ class CVFragment : Fragment() {
 
     private var mPrefs: Prefs? = null
     private var userDB: UserDB? = null
-    private var listCV: ArrayList<CVDB> = arrayListOf()
 
+    private val saveCVLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == AppCompatActivity.RESULT_OK) {
+                if (listCV.isEmpty()) {
+                    binding.layoutNoCv.root.visibility = View.VISIBLE
+                    binding.layoutListCv.root.visibility = View.GONE
+
+                    adapter.updateData(arrayListOf())
+                } else {
+                    binding.layoutNoCv.root.visibility = View.GONE
+                    binding.layoutListCv.root.visibility = View.VISIBLE
+
+                    adapter.updateData(listCV)
+                }
+            }
+        }
 }
