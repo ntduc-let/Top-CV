@@ -23,6 +23,7 @@ import com.ntduc.topcv.ui.data.model.CVDB
 import com.ntduc.topcv.ui.data.model.CVsDB
 import com.ntduc.topcv.ui.data.model.UserDB
 import com.ntduc.topcv.ui.ui.create_cv.activity.CreateCVActivity
+import com.ntduc.topcv.ui.ui.create_cv.activity.EditCVActivity
 import com.ntduc.topcv.ui.ui.dialog.LoadingDialog
 import com.ntduc.topcv.ui.ui.home.activity.MainActivity
 import com.ntduc.topcv.ui.ui.home.activity.MainActivityVM
@@ -57,7 +58,7 @@ class CVFragment : Fragment() {
             if (mPrefs!!.isLogin && userDB != null) {
                 val intent = Intent(requireContext(), CreateCVActivity::class.java)
                 intent.putExtra(MainActivity.KEY_USER_DB, userDB)
-                saveCVLauncher.launch(intent)
+                addCVLauncher.launch(intent)
             } else {
                 requireContext().shortToast("Vui lòng đăng nhập để thực hiện được tính năng này")
             }
@@ -67,7 +68,7 @@ class CVFragment : Fragment() {
             if (mPrefs!!.isLogin && userDB != null) {
                 val intent = Intent(requireContext(), CreateCVActivity::class.java)
                 intent.putExtra(MainActivity.KEY_USER_DB, userDB)
-                saveCVLauncher.launch(intent)
+                addCVLauncher.launch(intent)
             } else {
                 requireContext().shortToast("Vui lòng đăng nhập để thực hiện được tính năng này")
             }
@@ -79,6 +80,13 @@ class CVFragment : Fragment() {
                 deleteCV(it)
             }
             dialog.show(requireActivity().supportFragmentManager, "DeleteCVDialog")
+        }
+
+        adapter.setOnClickItemListener {
+            val intent = Intent(requireContext(), EditCVActivity::class.java)
+            intent.putExtra(MainActivity.KEY_USER_DB, userDB)
+            intent.putExtra(MainActivity.KEY_USER_CV, it)
+            editCVLauncher.launch(intent)
         }
     }
 
@@ -210,7 +218,7 @@ class CVFragment : Fragment() {
     private var userDB: UserDB? = null
     private var loadingDialog: LoadingDialog? = null
 
-    private val saveCVLauncher =
+    private val addCVLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == AppCompatActivity.RESULT_OK) {
                 if (listCV.isEmpty()) {
@@ -224,6 +232,13 @@ class CVFragment : Fragment() {
 
                     adapter.updateData(listCV)
                 }
+            }
+        }
+
+    private val editCVLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == AppCompatActivity.RESULT_OK) {
+                adapter.updateData(listCV)
             }
         }
 }

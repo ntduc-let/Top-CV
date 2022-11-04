@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val KEY_USER_DB = "KEY_USER_DB"
-        const val KEY_LIST_CV = "KEY_LIST_CV"
+        const val KEY_USER_CV = "KEY_USER_CV"
     }
 
     private lateinit var binding: ActivityMainBinding
