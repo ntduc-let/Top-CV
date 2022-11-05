@@ -35,10 +35,10 @@ class InfoJobActivity : AppCompatActivity() {
     private fun init() {
         initView()
         initData()
-        ijnitEvent()
+        initEvent()
     }
 
-    private fun ijnitEvent() {
+    private fun initEvent() {
         binding.toolbar.btnClose.setOnClickListener {
             onBackPressed()
         }
