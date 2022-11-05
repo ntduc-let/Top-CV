@@ -111,6 +111,7 @@ class JobFragment : Fragment() {
             } else {
                 binding.layoutToolbarJob.txtAccount.text = "Chào bạn"
                 binding.layoutToolbarJob.imgAva.setImageResource(R.drawable.ic_ava_48dp)
+                CVFragment.listCV = arrayListOf()
             }
         }
 
@@ -129,7 +130,7 @@ class JobFragment : Fragment() {
                     val groupJob1 = GroupJob()
                     groupJob1.title = "Việc làm tốt nhất"
                     groupJob1.isMore = false
-                    for (i in 0..19){
+                    for (i in 0..19) {
                         groupJob1.jobs.add(listJob[i])
                     }
                     listGroup.add(groupJob1)
@@ -137,7 +138,7 @@ class JobFragment : Fragment() {
                     val groupJob2 = GroupJob()
                     groupJob2.title = "Việc làm hấp dẫn"
                     groupJob2.isMore = false
-                    for (i in 20..39){
+                    for (i in 20..39) {
                         groupJob2.jobs.add(listJob[i])
                     }
                     listGroup.add(groupJob2)
@@ -145,12 +146,12 @@ class JobFragment : Fragment() {
                     val groupJob3 = GroupJob()
                     groupJob3.title = "Việc làm lương cao"
                     groupJob3.isMore = false
-                    for (i in 40..59){
+                    for (i in 40..59) {
                         groupJob3.jobs.add(listJob[i])
                     }
                     listGroup.add(groupJob3)
 
-                    withContext(Dispatchers.Main){
+                    withContext(Dispatchers.Main) {
                         binding.layoutLoading.root.visibility = View.GONE
 
                         adapter.updateListGroupJob(listGroup)
@@ -189,6 +190,7 @@ class JobFragment : Fragment() {
                     binding.layoutLoading.root.visibility = View.VISIBLE
                     viewModel.userDB.value = userDB
                 }
+                MainActivity.userDB = userDB
                 mPrefs!!.loadSavedPreferences()
             }
         }
@@ -197,16 +199,17 @@ class JobFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == AccountInformationActivity.RESULT_LOGOUT) {
                 binding.layoutLoading.root.visibility = View.VISIBLE
+                MainActivity.userDB = null
                 viewModel.userDB.value = null
                 mPrefs!!.loadSavedPreferences()
             } else if (it.resultCode == AccountInformationActivity.RESULT_UPDATE) {
                 binding.layoutLoading.root.visibility = View.VISIBLE
-                viewModel.userDB.value =
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        it.data?.getParcelableExtra(MainActivity.KEY_USER_DB, UserDB::class.java)
-                    } else {
-                        it.data?.getParcelableExtra(MainActivity.KEY_USER_DB) as UserDB?
-                    }
+                MainActivity.userDB = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    it.data?.getParcelableExtra(MainActivity.KEY_USER_DB, UserDB::class.java)
+                } else {
+                    it.data?.getParcelableExtra(MainActivity.KEY_USER_DB) as UserDB?
+                }
+                viewModel.userDB.value = MainActivity.userDB
             }
         }
 }

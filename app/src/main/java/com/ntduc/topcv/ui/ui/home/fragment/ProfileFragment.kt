@@ -38,11 +38,20 @@ class ProfileFragment : Fragment() {
 
     private fun init() {
         initView()
+    }
+
+
+    override fun onResume() {
+        super.onResume()
         initData()
     }
 
     private fun initData() {
-        if (!mPrefs!!.isLogin) return
+        if (!mPrefs!!.isLogin){
+            viewModel.favoriteJob.value = arrayListOf()
+            viewModel.applyJob.value = arrayListOf()
+            return
+        }
 
         val docRef =
             db.collection(MainActivity.userDB!!.userInfo!!._id!!).document("job_favorite")
@@ -52,6 +61,8 @@ class ProfileFragment : Fragment() {
                     val list = document.toObject<ListJobGlobal>()
                     if (list != null) {
                         viewModel.favoriteJob.value = list.jobGlobals
+                    }else{
+                        viewModel.favoriteJob.value = arrayListOf()
                     }
                 }
             }
@@ -68,6 +79,8 @@ class ProfileFragment : Fragment() {
                     val applys = apply.toObject<ListJobGlobal>()
                     if (applys != null) {
                         viewModel.applyJob.value = applys.jobGlobals
+                    }else{
+                        viewModel.applyJob.value = arrayListOf()
                     }
                 }
             }

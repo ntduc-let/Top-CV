@@ -183,6 +183,7 @@ class CVFragment : Fragment() {
                             adapter.updateData(listCV)
                         }
                     } else {
+                        binding.layoutLoading.root.visibility = View.GONE
                         binding.layoutNoCv.root.visibility = View.VISIBLE
                         binding.layoutListCv.root.visibility = View.GONE
 
