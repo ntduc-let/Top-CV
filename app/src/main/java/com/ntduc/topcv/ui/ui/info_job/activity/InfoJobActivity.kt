@@ -16,11 +16,11 @@ import com.ntduc.contextutils.inflater
 import com.ntduc.toastutils.shortToast
 import com.ntduc.topcv.R
 import com.ntduc.topcv.databinding.ActivityInfoJobBinding
-import com.ntduc.topcv.ui.data.model.JobGlobal
-import com.ntduc.topcv.ui.data.model.ListJobGlobal
+import com.ntduc.topcv.ui.data.model.*
 import com.ntduc.topcv.ui.ui.dialog.LoadingDialog
 import com.ntduc.topcv.ui.ui.home.activity.MainActivity
 import com.ntduc.topcv.ui.ui.info_job.adapter.FragmentAdapter
+import com.ntduc.topcv.ui.ui.info_job.dialog.ChooseCVBottomDialog
 import com.ntduc.topcv.ui.utils.Prefs
 
 class InfoJobActivity : AppCompatActivity() {
@@ -53,7 +53,17 @@ class InfoJobActivity : AppCompatActivity() {
 
         binding.btnApply.setOnClickListener {
             if (mPrefs!!.isLogin) {
-                applyJob()
+                if (listCV.isEmpty()){
+                    shortToast("Vui lòng tạo CV để thực hiện ứng tuyển")
+                }else{
+                    val dialog = ChooseCVBottomDialog()
+                    dialog.setListCV(listCV)
+                    dialog.setOnClickItemListener {
+                        applyJob()
+                        dialog.dismiss()
+                    }
+                    dialog.show(supportFragmentManager, "ChooseCVBottomDialog")
+                }
             } else {
                 shortToast("Vui lòng đăng nhập để thực hiện tính năng này")
             }
@@ -120,7 +130,23 @@ class InfoJobActivity : AppCompatActivity() {
         } else {
             intent.getParcelableExtra(MainActivity.KEY_JOB) as JobGlobal?
         }
+
+        getDataCV(MainActivity.userDB!!)
     }
+
+    private fun getDataCV(userDB: UserDB) {
+        val docRef = db.collection(userDB.userInfo!!._id!!).document("cv")
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val cVsDB = document.toObject<CVsDB>()
+                    if (cVsDB != null) {
+                        listCV = cVsDB.listCV
+                    }
+                }
+            }
+    }
+
 
     private fun initView() {
         db = Firebase.firestore
@@ -201,6 +227,7 @@ class InfoJobActivity : AppCompatActivity() {
     private lateinit var adapter: FragmentAdapter
     private lateinit var db: FirebaseFirestore
 
+    private var listCV: ArrayList<CVDB> = arrayListOf()
     private var listFav: ArrayList<JobGlobal> = arrayListOf()
     private var listApply: ArrayList<JobGlobal> = arrayListOf()
     private var mPrefs: Prefs? = null
